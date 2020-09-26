@@ -1,3 +1,7 @@
+sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j build
+==
+
+
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y dist-upgrade
@@ -68,3 +72,20 @@ python setup.py sdist
 
 CREATE USER vagrant WITH ENCRYPTED PASSWORD 'vagrant';
 ALTER USER vagrant WITH SUPERUSER;
+
+sudo apt-get -y install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt-get update
+sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+
+cd ~/.cache/act/actions-setup-python@v2 && git fetch && cd -

@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+        run: |-
+          python -m pip install app/blog-platform/.
+
+      - name: Code style check
+        run: |-
+          . scripts/build/linting.sh
+
+      - name: Run tests
+        run: |-
+          . scripts/build/testing.sh
+
+      - name: Dry compiling
+        run: |-
+          echo "Compiling..."
