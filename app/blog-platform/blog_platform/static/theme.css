@@ -3,7 +3,7 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   color: #ffffff;
-  background: #bc2131;
+  background: white;
 }
 h1,
 h2,
@@ -27,18 +27,24 @@ p {
   font-weight: 700;
 }
 .starter-template {
-  margin-top: 250px;
+  margin-top: 32px;
+}
+.starter-template .logo {
+  height: 60px;
+  margin: 10px 0;
+}
+.starter-template h1 {
+  margin-top: 10px;
+  font-size: 60px;
+  color: #3181d6;
+  display: inline-block;
+}
+.starter-template h1 .smaller {
+  font-size: 40px;
+  color: #f2b7bd;
 }
 .starter-template .content {
   margin-left: 10px;
-}
-.starter-template .content h1 {
-  margin-top: 10px;
-  font-size: 60px;
-}
-.starter-template .content h1 .smaller {
-  font-size: 40px;
-  color: #f2b7bd;
 }
 .starter-template .content .lead {
   font-size: 25px;
@@ -109,9 +115,6 @@ p {
 @media (max-width: 991px) {
   .starter-template {
     margin-top: 0;
-  }
-  .starter-template .logo {
-    margin: 40px auto;
   }
   .starter-template .content {
     margin-left: 0;
