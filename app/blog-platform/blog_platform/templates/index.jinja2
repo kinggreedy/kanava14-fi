@@ -3,7 +3,7 @@
 {% block content %}
 <div class="content">
     {% if request.authenticated_userid %}
-        Welcome <strong>{{ user.get_author() }}</strong> ::
+        Welcome <strong>{{ request.session['user'].get_author() }}</strong> ::
         <a href="{{ request.route_url('logout') }}">Sign Out</a>
     {% else %}
         <form action="{{ request.route_url('login') }}" method="post" class="form-inline">

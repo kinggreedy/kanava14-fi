@@ -3,7 +3,7 @@ from wtforms import IntegerField
 from wtforms.widgets import HiddenInput
 
 
-def strip_filter(x): x.strip() if x else None
+def strip_filter(x): return x.strip() if x else None
 
 
 class BlogPostFormCreate(Form):

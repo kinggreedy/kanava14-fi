@@ -20,7 +20,12 @@ class PostService(object):
         count = max(1, min(count, 20))
         query = request.dbsession.query(Post)
         query = query.order_by(sa.desc(Post.created))
-        query_params = request.GET.mixed()
+        try:
+            query_params = request.GET.mixed()
+        except AttributeError:
+            # When using DummySession from pytest
+            # it's dict instead of webob.multidict
+            query_params = request.GET
 
         def url_maker(link_page):
             query_params['page'] = link_page

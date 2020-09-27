@@ -2,7 +2,7 @@
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
-  color: #ffffff;
+  color: #8d8d8d;
   background: white;
 }
 h1,
@@ -51,7 +51,7 @@ p {
   color: #f2b7bd;
 }
 .starter-template .content .lead .font-normal {
-  color: #ffffff;
+  color: #8d8d8d;
 }
 .starter-template .links {
   float: right;
@@ -83,7 +83,7 @@ p {
   text-decoration: underline;
 }
 .starter-template .links ul li a:hover, a:hover {
-  color: #ffffff;
+  color: #8d8d8d;
   text-decoration: underline;
 }
 .starter-template .links ul li .icon-muted {
@@ -91,7 +91,7 @@ p {
   margin-right: 5px;
 }
 .starter-template .links ul li:hover .icon-muted {
-  color: #ffffff;
+  color: #8d8d8d;
 }
 .starter-template .copyright {
   margin-top: 10px;
