@@ -81,11 +81,20 @@ sudo apt-get -y install \
     software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 
-cd ~/.cache/act/actions-setup-python@v2 && git fetch && cd -
+db_password=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
+sudo -u postgres psql -c "CREATE DATABASE kanava14;"
+sudo -u postgres psql -c "
+    CREATE USER kanava14 WITH ENCRYPTED PASSWORD '$db_password';
+    GRANT ALL PRIVILEGES ON DATABASE kanava14 TO kanava14;"
+"
+
+pip install -e .
+alembic -c development.ini upgrade head
+initialize_blog_platform_db development.ini
