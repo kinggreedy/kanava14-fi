@@ -1,8 +1,8 @@
-from wtforms import Form, StringField, TextAreaField, validators
-from wtforms import IntegerField, PasswordField
-from wtforms.widgets import HiddenInput
+from wtforms import Form, StringField, validators
+from wtforms import PasswordField
 
-strip_filter = lambda x: x.strip() if x else None
+
+def strip_filter(x): x.strip() if x else None
 
 
 class RegistrationForm(Form):

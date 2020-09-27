@@ -12,7 +12,11 @@ def setup_models(dbsession):
     Add or update models / fixtures in the database.
 
     """
-    model = models.user.User(username=u'admin', password=hash_password(u'admin'), name=u'Admin')
+    model = models.user.User(
+        username=u'admin',
+        password=hash_password(u'admin'),
+        name=u'Admin'
+    )
     dbsession.add(model)
 
 

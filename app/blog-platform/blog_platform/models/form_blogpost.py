@@ -2,7 +2,8 @@ from wtforms import Form, StringField, TextAreaField, validators
 from wtforms import IntegerField
 from wtforms.widgets import HiddenInput
 
-strip_filter = lambda x: x.strip() if x else None
+
+def strip_filter(x): x.strip() if x else None
 
 
 class BlogPostFormCreate(Form):
@@ -14,4 +15,3 @@ class BlogPostFormCreate(Form):
 
 class BlogPostFormUpdate(BlogPostFormCreate):
     id = IntegerField(widget=HiddenInput())
-

@@ -1,10 +1,8 @@
 from sqlalchemy import (
     Column,
-    Index,
     Unicode,
     UnicodeText,
     Integer,
-    Text,
     DateTime,
     ForeignKey,
 )
@@ -16,6 +14,7 @@ from webhelpers2.date import distance_of_time_in_words
 from .meta import Base
 from .user import User
 
+
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
@@ -23,7 +22,11 @@ class Post(Base):
     body = Column(UnicodeText, default=u'')
     created = Column(DateTime, default=datetime.datetime.utcnow)
     edited = Column(DateTime, default=datetime.datetime.utcnow)
-    author = Column(Integer, ForeignKey(User.__tablename__ + ".id"), nullable=False)
+    author = Column(
+        Integer,
+        ForeignKey(User.__tablename__ + ".id"),
+        nullable=False
+    )
 
     @property
     def slug(self):

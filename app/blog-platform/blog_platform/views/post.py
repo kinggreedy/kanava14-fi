@@ -1,10 +1,8 @@
 from pyramid.view import view_config
-from pyramid.response import Response
-from sqlalchemy.exc import DBAPIError
 from pyramid.httpexceptions import HTTPNotFound, HTTPFound, HTTPForbidden
 
 from ..models.post import Post
-from ..models.form_blogpost import *
+from ..models.form_blogpost import BlogPostFormCreate, BlogPostFormUpdate
 from ..services.post import PostService
 from ..services.user import UserService
 

@@ -4,7 +4,6 @@ from sqlalchemy import (
     Unicode,
     UnicodeText,
     Integer,
-    Text,
 )
 from ..security import (check_password, hash_password)
 

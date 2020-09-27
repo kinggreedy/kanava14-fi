@@ -1,10 +1,7 @@
 from pyramid.view import view_config
-from pyramid.response import Response
-from sqlalchemy.exc import DBAPIError
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 
-from .. import models
 from ..models.user import User
 from ..models.form_registration import RegistrationForm
 from ..services.post import PostService
