@@ -1,10 +1,10 @@
 import argparse
 import sys
-
 from pyramid.paster import bootstrap, setup_logging
 from sqlalchemy.exc import OperationalError
 
 from .. import models
+from ..security import hash_password
 
 
 def setup_models(dbsession):
@@ -12,7 +12,11 @@ def setup_models(dbsession):
     Add or update models / fixtures in the database.
 
     """
-    model = models.mymodel.MyModel(name='one', value=1)
+    model = models.user.User(
+        username=u'admin',
+        password=hash_password(u'admin'),
+        name=u'Admin'
+    )
     dbsession.add(model)
 
 

@@ -20,6 +20,12 @@ requires = [
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
+    'bcrypt',
+    'passlib',
+    'webhelpers2',
+    'wtforms',
+    'paginate_sqlalchemy',
+    'psycopg2-binary',
 ]
 
 tests_require = [

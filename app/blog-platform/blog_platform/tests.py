@@ -5,10 +5,6 @@ from pyramid import testing
 import transaction
 
 
-def dummy_request(dbsession):
-    return testing.DummyRequest(dbsession=dbsession)
-
-
 class BaseTest(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp(settings={
@@ -40,27 +36,41 @@ class BaseTest(unittest.TestCase):
         Base.metadata.drop_all(self.engine)
 
 
-class TestMyViewSuccessCondition(BaseTest):
+class TestInitializeDBSuccess(BaseTest):
+    def setUp(self):
+        super(TestInitializeDBSuccess, self).setUp()
+        self.init_database()
+        from .scripts import initialize_db
+        initialize_db.setup_models(dbsession=self.session)
 
+    def test_ensure_no_project_error(self):
+        from .views.default import index
+        dummy_request = testing.DummyRequest(dbsession=self.session)
+        info = index(dummy_request)
+        self.assertTrue("status_int" not in info or info.status_int == 200)
+
+
+class TestMyViewSuccessCondition(BaseTest):
     def setUp(self):
         super(TestMyViewSuccessCondition, self).setUp()
         self.init_database()
 
-        from .models import MyModel
-
-        model = MyModel(name='one', value=55)
-        self.session.add(model)
-
     def test_passing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'Blog Platform')
+        from .views.default import index
+        dummy_request = testing.DummyRequest(dbsession=self.session)
+        info = index(dummy_request)
+        self.assertEqual(info['project'], 'Kanava14.fi')
 
 
-class TestMyViewFailureCondition(BaseTest):
-
-    def test_failing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info.status_int, 500)
+class TestForm(unittest.TestCase):
+    def test_update_post_form(self):
+        from .models.form_blogpost import BlogPostFormUpdate
+        from webob.multidict import MultiDict
+        form = BlogPostFormUpdate(MultiDict([
+            ('id', 3),
+            ('title', "Blog Title"),
+            ('body', "Blog Body")
+        ]))
+        self.assertEqual(form.id.data, 3)
+        self.assertEqual(form.title.data, "Blog Title")
+        self.assertEqual(form.body.data, "Blog Body")

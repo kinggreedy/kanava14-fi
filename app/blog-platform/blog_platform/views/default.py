@@ -1,32 +1,58 @@
 from pyramid.view import view_config
-from pyramid.response import Response
+from pyramid.httpexceptions import HTTPFound
+from pyramid.security import remember, forget
+import transaction
 
-from sqlalchemy.exc import DBAPIError
-
-from .. import models
-
-
-@view_config(route_name='home', renderer='../templates/mytemplate.jinja2')
-def my_view(request):
-    try:
-        query = request.dbsession.query(models.MyModel)
-        one = query.filter(models.MyModel.name == 'one').first()
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
-    return {'one': one, 'project': 'Blog Platform'}
+from ..models.user import User
+from ..models.form_registration import RegistrationForm
+from ..services.post import PostService
+from ..services.user import UserService
 
 
-db_err_msg = """\
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
+@view_config(route_name='index', renderer='../templates/index.jinja2')
+def index(request):
+    if request.authenticated_userid:
+        request.session['user'] = UserService.by_id(
+            request.authenticated_userid,
+            request=request
+        )
+    page = int(request.params.get('page', 1))
+    count = int(request.params.get('count', 5))
+    paginator = PostService.get_paginator(request, page, count)
+    return {'paginator': paginator, 'project': 'Kanava14.fi'}
 
-1.  You may need to initialize your database tables with `alembic`.
-    Check your README.txt for descriptions and try to run it.
 
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
+@view_config(route_name='login', renderer='string', request_method='POST')
+def login(request):
+    username = request.POST.get('username')
+    headers = forget(request)
+    if username:
+        user = UserService.by_username(username, request=request)
+        if user and user.verify_password(request.POST.get('password')):
+            headers = remember(request, user.id)
+            request.session['user'] = user
+    return HTTPFound(location=request.route_url('index'), headers=headers)
 
-After you fix the problem, please restart the Pyramid application to
-try it again.
-"""
+
+@view_config(route_name='logout', renderer='string')
+def logout(request):
+    headers = forget(request)
+    request.session['user'] = None
+    return HTTPFound(location=request.route_url('index'), headers=headers)
+
+
+@view_config(route_name='register', renderer='../templates/register.jinja2')
+def register(request):
+    form = RegistrationForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        # add user to database
+        new_user = User(username=form.username.data, name=form.name.data)
+        new_user.set_password(form.password.data)
+        request.dbsession.add(new_user)
+        transaction.commit()
+
+        # put that registered user as logged in
+        user = UserService.by_username(new_user.username, request=request)
+        headers = remember(request, user.id)
+        return HTTPFound(location=request.route_url('index'), headers=headers)
+    return {'form': form}
