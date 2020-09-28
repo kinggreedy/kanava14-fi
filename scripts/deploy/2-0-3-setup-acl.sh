@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+FLAG=/opt/kanava14fi/flags/.2-0-3-setup-acl
+
+if [ -f "$FLAG" ]; then
+  echo "$FLAG exist, script has already run!"
+  exit
+fi
+
+export DEBIAN_FRONTEND=noninteractive
+
 sudo apt-get -y install \
     apt-transport-https \
     ca-certificates \

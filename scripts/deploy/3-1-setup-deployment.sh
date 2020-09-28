@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+FLAG=/opt/kanava14fi/flags/.3-1-setup-deployment
+
+if [ -f "$FLAG" ]; then
+  echo "$FLAG exist, script has already run!"
+  exit
+fi
+
+export DEBIAN_FRONTEND=noninteractive
+
 #TODO: create deploy account
 
 sudo mkdir -p /opt/python3test/blog-platform
