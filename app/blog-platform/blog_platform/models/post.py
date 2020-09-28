@@ -8,6 +8,7 @@ from sqlalchemy import (
 )
 
 import datetime
+import re
 from webhelpers2.text import urlify
 from webhelpers2.date import distance_of_time_in_words
 
@@ -21,7 +22,7 @@ class Post(Base):
     title = Column(Unicode(255), unique=True, nullable=False)
     body = Column(UnicodeText, default=u'')
     created = Column(DateTime, default=datetime.datetime.utcnow)
-    edited = Column(DateTime, default=datetime.datetime.utcnow)
+    edited = Column(DateTime, onupdate=datetime.datetime.utcnow)
     author = Column(
         Integer,
         ForeignKey(User.__tablename__ + ".id"),
@@ -34,5 +35,28 @@ class Post(Base):
 
     @property
     def created_in_words(self):
-        return distance_of_time_in_words(self.created,
-                                         datetime.datetime.utcnow())
+        return self.created.strftime("%B %d, %Y")
+
+    @property
+    def edited_in_words(self):
+        return None if self.edited is None \
+            else distance_of_time_in_words(self.edited,
+                                           datetime.datetime.utcnow(),
+                                           granularity='minute')
+
+    @property
+    def preview_content(self):
+        list_words = self.body.split(" ")
+        collected_words = []
+        count = 0
+        max_words = 15
+        for word in list_words:
+            if re.sub(r'[^\w]', '', word) != "":
+                collected_words.append(re.sub(r'[^\w\',."-]', '', word))
+                count += 1
+                if count >= max_words + 1:
+                    break
+        if count > max_words:
+            collected_words[count - 1] = "..."
+
+        return " ".join(collected_words)

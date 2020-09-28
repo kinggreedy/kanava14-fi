@@ -6,5 +6,5 @@ def includeme(config):
     config.add_route('logout', '/logout')
     config.add_route('post', r'/post/{id:\d+}/{slug}',
                      factory='blog_platform.security.PostFactory')
-    config.add_route('post_action', '/blog/{action}',
+    config.add_route('post_action', '/post/{action}',
                      factory='blog_platform.security.PostFactory')

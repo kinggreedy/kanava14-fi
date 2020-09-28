@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="content">
-    <form action="{{ request.route_url('post_action',action=action) }}" method="post" class="form">
+    <form action="{{ request.route_url('post_action',action=action) }}" method="post" class="form form-blogpost">
         {% if action =='edit' %}
             {{ form.id() }}
         {% endif %}
 
         {% for error in form.title.errors %}
-            <div class="error">{{ error }}</div>
+            <div class="text-danger">{{ error }}</div>
         {% endfor %}
 
         <div class="form-group">
@@ -17,18 +17,32 @@
         </div>
 
         {% for error in form.body.errors %}
-            <div class="error">{{ error }}</div>
+            <div class="text-danger">{{ error }}</div>
         {% endfor %}
 
-        <div class="form-group">
+        <div class="form-group form-edit-blog">
             <label for="body">{{ form.body.label }}</label>
             {{ form.body(class_='form-control') }}
         </div>
         <div class="form-group">
             <label></label>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default btn-primary">Submit</button>
+            <a class="btn btn-light" href="{{ request.route_url('index') }}">Cancel</a>
         </div>
     </form>
-    <p><a href="{{ request.route_url('index') }}">Go Back</a></p>
 </div>
 {% endblock content %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock extra_css %}
+
+{% block footer_js %}
+  <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script>
+    var simplemde = new SimpleMDE({
+      placeholder: "Use Markdown syntax",
+      element: document.querySelector(".form-edit-blog>.form-control"),
+    });
+  </script>
+{% endblock footer_js %}

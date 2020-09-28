@@ -2,6 +2,7 @@ import sqlalchemy as sa
 from paginate_sqlalchemy import SqlalchemyOrmPage
 
 from ..models.post import Post
+from ..models.user import User
 
 
 class PostService(object):
@@ -18,7 +19,7 @@ class PostService(object):
     @classmethod
     def get_paginator(cls, request, page=1, count=5):
         count = max(1, min(count, 20))
-        query = request.dbsession.query(Post)
+        query = request.dbsession.query(Post, User).join(User)
         query = query.order_by(sa.desc(Post.created))
         try:
             query_params = request.GET.mixed()

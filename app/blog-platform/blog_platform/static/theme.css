@@ -1,18 +1,12 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
-body {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  color: #8d8d8d;
-  background: white;
+.text-decoration-none {
+    text-decoration: none!important;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
+.text-reset {
+    color: inherit!important;
+}
+body {
+  background: white;
 }
 p {
   font-weight: 300;
@@ -26,132 +20,68 @@ p {
 .font-bold {
   font-weight: 700;
 }
-.starter-template {
-  margin-top: 32px;
+.main-container {
+  margin-top: 194px;
 }
-.starter-template .logo {
-  height: 60px;
-  margin: 10px 0;
+.navbar.fixed-top {
+  z-index: 8;
 }
-.starter-template h1 {
+.navbar .logo {
+  height: 50px;
+  margin: 10px 6px 10px 0;
+}
+.navbar h1 {
   margin-top: 10px;
-  font-size: 60px;
-  color: #3181d6;
+  font-size: 40px;
   display: inline-block;
 }
-.starter-template h1 .smaller {
+.navbar h1 .smaller {
   font-size: 40px;
-  color: #f2b7bd;
 }
-.starter-template .content {
+.main-container .content {
   margin-left: 10px;
 }
-.starter-template .content .lead {
-  font-size: 25px;
-  color: #f2b7bd;
+.form-register label, .form-register label {
+  font-weight: bold;
 }
-.starter-template .content .lead .font-normal {
-  color: #8d8d8d;
+.form-edit-blog {
+  height: calc(100vh - 370px);
+  min-height: 200px;
 }
-.starter-template .links {
-  float: right;
-  right: 0;
-  margin-top: 125px;
+.form-edit-blog>.form-control {
+  height: calc(100% - 32px);
 }
-.starter-template .links ul {
-  display: block;
-  padding: 0;
-  margin: 0;
+.form-edit-blog>.CodeMirror {
+  min-height: 117px;
+  height: calc(100% - 83px);
 }
-.starter-template .links ul li {
-  list-style: none;
-  display: inline;
-  margin: 0 10px;
+.article-view .article-title-header {
+  display: inline-block;
+  font-size: 30px;
+  font-weight: bold;
 }
-.starter-template .links ul li:first-child {
-  margin-left: 0;
+.article-view .article-title-header:first-letter {
+  text-transform: capitalize;
 }
-.starter-template .links ul li:last-child {
-  margin-right: 0;
+.article-view .article-edit {
+  margin-bottom: 10px;
 }
-.starter-template .links ul li.current-version {
-  color: #f2b7bd;
-  font-weight: 400;
+.article-view .article-meta {
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 20px;
 }
-.starter-template .links ul li a, a {
-  color: #f2b7bd;
-  text-decoration: underline;
+.article-view .article-meta .date {
+  padding-left: 12px;
 }
-.starter-template .links ul li a:hover, a:hover {
-  color: #8d8d8d;
-  text-decoration: underline;
+.article-view .article-meta .date {
+  padding-left: 12px;
 }
-.starter-template .links ul li .icon-muted {
-  color: #eb8b95;
-  margin-right: 5px;
+.article-view .article-meta .edited {
+  font-style: italic;
 }
-.starter-template .links ul li:hover .icon-muted {
-  color: #8d8d8d;
-}
-.starter-template .copyright {
-  margin-top: 10px;
-  font-size: 0.9em;
-  color: #f2b7bd;
-  text-transform: lowercase;
-  float: right;
-  right: 0;
-}
-@media (max-width: 1199px) {
-  .starter-template .content h1 {
-    font-size: 45px;
-  }
-  .starter-template .content h1 .smaller {
-    font-size: 30px;
-  }
-  .starter-template .content .lead {
-    font-size: 20px;
-  }
-}
-@media (max-width: 991px) {
-  .starter-template {
-    margin-top: 0;
-  }
-  .starter-template .content {
-    margin-left: 0;
-    text-align: center;
-  }
-  .starter-template .content h1 {
-    margin-bottom: 20px;
-  }
-  .starter-template .links {
-    float: none;
-    text-align: center;
-    margin-top: 60px;
-  }
-  .starter-template .copyright {
-    float: none;
-    text-align: center;
-  }
-}
-@media (max-width: 767px) {
-  .starter-template .content h1 .smaller {
-    font-size: 25px;
-    display: block;
-  }
-  .starter-template .content .lead {
-    font-size: 16px;
-  }
-  .starter-template .links {
-    margin-top: 40px;
-  }
-  .starter-template .links ul li {
-    display: block;
-    margin: 0;
-  }
-  .starter-template .links ul li .icon-muted {
-    display: none;
-  }
-  .starter-template .copyright {
-    margin-top: 20px;
+@media (min-width: 768px) {
+  .main-container {
+    margin-top: 154px;
   }
 }

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar bg-primary fixed-top text-light">
+  <a class="navbar-brand mr-0 mr-md-2 text-light" href="{{ request.route_url('index') }}">
+    <h1>
+      <img class="logo" src="{{ request.static_url('blog_platform:static/pyramid.png') }}" alt="pyramid web framework">
+      <span class="font-semi-bold">{{ request.registry.settings["project.name"] }}</span>
+    </h1>
+  </a>
+  <div class="navbar-nav-scroll ml-md-auto" id="navbarNav">
+    <ul class="navbar-nav">
+      {% if request.authenticated_userid %}
+        <li class="nav-item active dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Welcome <strong>{{ request.user.get_author() }}</strong>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{{ request.route_url('logout') }}">Sign Out</a>
+          <a class="dropdown-item" href="{{ request.route_url('post_action',action='create') }}">
+            Make new post
+          </a>
+        </div>
+      </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link text-light" href="{{ request.route_url('login') }}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="{{ request.route_url('register') }}">Register</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

@@ -1,18 +1,43 @@
 {% extends "../layout.jinja2" %}
 
+{% block html_sub_title %}
+  - {{ entry.title }}
+{% endblock html_sub_title %}
+
 {% block content %}
 <div class="content">
-    <h1>{{ entry.title }}</h1>
+  <div class="article-view">
+    <a class="article-title text-decoration-none text-reset" href="{{ request.route_url('post', id=entry.id, slug=entry.slug) }}">
+      <h1 class="article-title-header">{{ entry.title }}</h1>
+    </a>
+    {% if entry.author == request.authenticated_userid %}
+        <a class="btn article-edit" href="{{ request.route_url('post_action', action='edit',_query={'id':entry.id}) }}">
+          <span class="oi oi-pencil" title="Edit"></span>
+          Edit
+        </a>
+    {% endif %}
+    <h2 class="article-meta">
+      by
+      <span class="author">{{ author.get_author() }}</span>
+      <span class="date" title="{{ entry.created }}">{{ entry.created_in_words }}</span>
+      {% if entry.edited %}
+        <span class="edited">
+          - Last updated
+          <span class="edited-date" title="{{ entry.edited }}">{{ entry.edited_in_words }}</span>
+          ago
+        </span>
+      {% endif %}
+    </h2>
     <hr/>
-    <p>{{ entry.body }}</p>
-    <hr/>
-    <p>Created <strong title="{{ entry.created }}">
-        {{ entry.created_in_words }}</strong> ago</p>
-
-    <p><a href="{{ request.route_url('index') }}">Go Back</a> ::
-        <a href="{{ request.route_url('post_action', action='edit',
-        _query={'id':entry.id}) }}">Edit entry</a>
-
-    </p>
+    <p><div id="blog-content">{{ entry.body }}</div></p>
+  </div>
 </div>
 {% endblock content %}
+
+{% block footer_js %}
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    document.getElementById('blog-content').innerHTML = marked(document.querySelector("#blog-content").innerHTML);
+  </script>
+{% endblock footer_js %}
+
