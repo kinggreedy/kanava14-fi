@@ -2,17 +2,25 @@
 
 {% block content %}
 <div class="content">
-    <h1>{{ entry.title }}</h1>
-    <hr/>
-    <p>{{ entry.body }}</p>
-    <hr/>
-    <p>Created <strong title="{{ entry.created }}">
-        {{ entry.created_in_words }}</strong> ago</p>
+  <h1>{{ entry.title }}</h1>
+  <hr/>
+  <h2>{{ author.get_author() }}</h2>
+  <hr/>
+  <p>{{ entry.body }}</p>
+  <hr/>
+  {% if entry.edited %}
+    <p>Last edited <strong title="{{ entry.edited }}">
+    {{ entry.edited_in_words }}</strong> ago</p>
+  {% endif %}
+  <p>Created <strong title="{{ entry.created }}">
+    {{ entry.created_in_words }}</strong> ago</p>
 
-    <p><a href="{{ request.route_url('index') }}">Go Back</a> ::
-        <a href="{{ request.route_url('post_action', action='edit',
-        _query={'id':entry.id}) }}">Edit entry</a>
-
-    </p>
+  {% if entry.author == request.authenticated_userid %}
+  <p>
+    <a href="
+      {{ request.route_url('post_action', action='edit',_query={'id':entry.id}) }}
+    ">Edit entry</a>
+  </p>
+  {% endif %}
 </div>
 {% endblock content %}

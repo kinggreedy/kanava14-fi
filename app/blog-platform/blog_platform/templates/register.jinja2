@@ -1,9 +1,11 @@
 {% extends "layout.jinja2" %}
 
+{% block html_sub_title %}
+  - Register
+{% endblock html_sub_title %}
+
 {% block content %}
 <div class="content">
-    <h1>Register</h1>
-
     <form action="{{ request.route_url('register') }}" method="post" class="form">
         <div class="form-group">
             {{ form.name.label }}
@@ -18,7 +20,7 @@
             {% for error in form.username.errors %}
                 <div class="error">{{ error }}</div>
             {% endfor %}
-            {{ form.username(class_='form-control') }}
+            {{ form.username(class_='form-control', placeholder=form.username.description) }}
         </div>
 
         <div class="form-group">
@@ -26,13 +28,11 @@
             {% for error in form.password.errors %}
                 <div class="error">{{ error }}</div>
             {% endfor %}
-            {{ form.password(class_='form-control') }}
+            {{ form.password(class_='form-control', placeholder=form.password.description) }}
         </div>
         <div class="form-group">
-            <label></label>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">Register</button>
         </div>
     </form>
-    <p><a href="{{ request.route_url('index') }}">Go Back</a></p>
 </div>
 {% endblock content %}

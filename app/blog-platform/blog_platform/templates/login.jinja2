@@ -1,0 +1,29 @@
+{% extends "layout.jinja2" %}
+
+{% block html_sub_title %}
+  - Login
+{% endblock html_sub_title %}
+
+{% block content %}
+<div class="content">
+  <form action="{{ request.route_url('login') }}" method="post" class="form">
+    <div class="form-group">
+      {{ form.username.label }}
+      {% for error in form.username.errors %}
+          <div class="error">{{ error }}</div>
+      {% endfor %}
+      {{ form.username(class_='form-control') }}
+    </div>
+    <div class="form-group">
+      {{ form.password.label }}
+      {% for error in form.password.errors %}
+          <div class="error">{{ error }}</div>
+      {% endfor %}
+      {{ form.password(class_='form-control') }}
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Login" class="btn btn-default">
+    </div>
+  </form>
+</div>
+{% endblock content %}

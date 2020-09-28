@@ -7,13 +7,15 @@ from ..services.post import PostService
 from ..services.user import UserService
 
 
-@view_config(route_name='post', renderer='../templates/post/view.jinja2')
+@view_config(route_name='post', renderer='../templates/post/view.jinja2',
+             permission='view')
 def post_view(request):
     blog_id = int(request.matchdict.get('id', -1))
     entry = PostService.by_id(blog_id, request)
+    author = UserService.by_id(entry.author, request)
     if not entry:
         return HTTPNotFound()
-    return {'entry': entry}
+    return {'entry': entry, 'author': author}
 
 
 @view_config(route_name='post_action', match_param='action=create',

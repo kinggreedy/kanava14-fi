@@ -21,7 +21,7 @@ class Post(Base):
     title = Column(Unicode(255), unique=True, nullable=False)
     body = Column(UnicodeText, default=u'')
     created = Column(DateTime, default=datetime.datetime.utcnow)
-    edited = Column(DateTime, default=datetime.datetime.utcnow)
+    edited = Column(DateTime, onupdate=datetime.datetime.utcnow)
     author = Column(
         Integer,
         ForeignKey(User.__tablename__ + ".id"),
@@ -36,3 +36,9 @@ class Post(Base):
     def created_in_words(self):
         return distance_of_time_in_words(self.created,
                                          datetime.datetime.utcnow())
+
+    @property
+    def edited_in_words(self):
+        return None if self.edited is None \
+            else distance_of_time_in_words(self.edited,
+                                           datetime.datetime.utcnow())

@@ -4,7 +4,7 @@ from pyramid.security import remember, forget
 import transaction
 
 from ..models.user import User
-from ..models.form_registration import RegistrationForm
+from ..models.form_registration import RegistrationForm, SignInForm
 from ..services.post import PostService
 from ..services.user import UserService
 
@@ -22,16 +22,19 @@ def index(request):
     return {'paginator': paginator, 'project': 'Kanava14.fi'}
 
 
-@view_config(route_name='login', renderer='string', request_method='POST')
+@view_config(route_name='login', renderer='../templates/login.jinja2')
 def login(request):
-    username = request.POST.get('username')
-    headers = forget(request)
-    if username:
-        user = UserService.by_username(username, request=request)
-        if user and user.verify_password(request.POST.get('password')):
-            headers = remember(request, user.id)
-            request.session['user'] = user
-    return HTTPFound(location=request.route_url('index'), headers=headers)
+    form = SignInForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        username = request.POST.get('username')
+        headers = forget(request)
+        if username:
+            user = UserService.by_username(username, request=request)
+            if user and user.verify_password(request.POST.get('password')):
+                headers = remember(request, user.id)
+                request.session['user'] = user
+        return HTTPFound(location=request.route_url('index'), headers=headers)
+    return {'form': form}
 
 
 @view_config(route_name='logout', renderer='string')
