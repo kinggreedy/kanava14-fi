@@ -41,6 +41,9 @@ p {
 .main-container .content {
   margin-left: 10px;
 }
+.form-register label, .form-register label {
+  font-weight: bold;
+}
 .form-edit-blog {
   height: calc(100vh - 370px);
   min-height: 200px;

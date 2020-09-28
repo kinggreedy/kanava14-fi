@@ -1,6 +1,9 @@
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
+from psycopg2.errors import UniqueViolation
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import DetachedInstanceError
 import transaction
 
 from ..models.user import User
@@ -14,7 +17,11 @@ def index(request):
     page = int(request.params.get('page', 1))
     count = int(request.params.get('count', 5))
     paginator = PostService.get_paginator(request, page, count)
-    return {'paginator': paginator, 'project': 'Kanava14.fi', 'custom_link_tag': custom_link_tag}
+    return {
+        'paginator': paginator,
+        'project': 'Kanava14.fi',
+        'custom_link_tag': custom_link_tag
+    }
 
 
 def custom_link_tag(item):
@@ -27,12 +34,23 @@ def custom_link_tag(item):
 
     if not item["href"] or item["type"] in ("span", "current_page"):
         if item["attrs"]:
-            item["attrs"]["class"] = item["attrs"].get("class", "") + " page-link"
+            class_data = item["attrs"].get("class", "")
+            item["attrs"]["class"] = class_data + " page-link"
             element = make_html_tag("span", **item["attrs"]) + text + "</span>"
-            element = make_html_tag("li", text=element, **{'class': 'page-item ' + item["attrs"]["state"]})
+            element = make_html_tag(
+                "li",
+                text=element,
+                **{'class': 'page-item ' + item["attrs"]["state"]}
+            )
         return element
 
-    element = make_html_tag("a", text=text, href=target_url, **{'class': 'page-link'}, **item["attrs"])
+    element = make_html_tag(
+        "a",
+        text=text,
+        href=target_url,
+        **{'class': 'page-link'},
+        **item["attrs"]
+    )
     element = make_html_tag("li", text=element, **{'class': 'page-item'})
     return element
 
@@ -67,10 +85,19 @@ def register(request):
         new_user = User(username=form.username.data, name=form.name.data)
         new_user.set_password(form.password.data)
         request.dbsession.add(new_user)
-        transaction.commit()
+        try:
+            # put that registered user as logged in
+            transaction.commit()
+            user = UserService.by_username(new_user.username, request=request)
+            headers = remember(request, user.id)
+        except IntegrityError as e:
+            if not isinstance(e.orig, UniqueViolation):
+                raise e
+            transaction.abort()
+            form.username.errors.append("Username is not available")
+            return {'form': form}
+        except DetachedInstanceError:
+            return HTTPFound(location=request.route_url('index'))
 
-        # put that registered user as logged in
-        user = UserService.by_username(new_user.username, request=request)
-        headers = remember(request, user.id)
         return HTTPFound(location=request.route_url('index'), headers=headers)
     return {'form': form}

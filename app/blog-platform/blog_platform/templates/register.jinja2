@@ -6,11 +6,11 @@
 
 {% block content %}
 <div class="content">
-    <form action="{{ request.route_url('register') }}" method="post" class="form">
+    <form action="{{ request.route_url('register') }}" method="post" class="form form-register">
         <div class="form-group">
             {{ form.name.label }}
             {% for error in form.name.errors %}
-                <div class="error">{{ error }}</div>
+                <div class="text-danger">{{ error }}</div>
             {% endfor %}
             {{ form.name(class_='form-control') }}
         </div>
@@ -18,7 +18,7 @@
         <div class="form-group">
             {{ form.username.label }}
             {% for error in form.username.errors %}
-                <div class="error">{{ error }}</div>
+                <div class="text-danger">{{ error }}</div>
             {% endfor %}
             {{ form.username(class_='form-control', placeholder=form.username.description) }}
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             {{ form.password.label }}
             {% for error in form.password.errors %}
-                <div class="error">{{ error }}</div>
+                <div class="text-danger">{{ error }}</div>
             {% endfor %}
             {{ form.password(class_='form-control', placeholder=form.password.description) }}
         </div>

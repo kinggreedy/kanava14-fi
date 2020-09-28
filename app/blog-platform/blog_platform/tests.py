@@ -50,9 +50,9 @@ class TestInitializeDBSuccess(BaseTest):
         self.assertTrue("status_int" not in info or info.status_int == 200)
 
 
-class TestMyViewSuccessCondition(BaseTest):
+class TestIndexViewSuccessCondition(BaseTest):
     def setUp(self):
-        super(TestMyViewSuccessCondition, self).setUp()
+        super(TestIndexViewSuccessCondition, self).setUp()
         self.init_database()
 
     def test_passing_view(self):
@@ -62,15 +62,51 @@ class TestMyViewSuccessCondition(BaseTest):
         self.assertEqual(info['project'], 'Kanava14.fi')
 
 
+class TestRegisterView(BaseTest):
+    def setUp(self):
+        super(TestRegisterView, self).setUp()
+        self.config.add_route('index', '/')
+        self.config.add_route('register', '/register')
+        self.init_database()
+
+    def test_register_view(self):
+        from .views.default import register
+        dummy_request = testing.DummyRequest(dbsession=self.session)
+        dummy_request.POST = None
+        info = register(dummy_request)
+        self.assertTrue("status_int" not in info or info.status_int == 200)
+
+    def test_register_user(self):
+        from .views.default import register
+        from webob.multidict import MultiDict
+        username = 'user'
+        password = 'pass'
+        name = 'name'
+        dummy_request = testing.DummyRequest(
+            dbsession=self.session,
+            post=MultiDict([
+                ('username', username),
+                ('password', password),
+                ('name', name)
+            ])
+        )
+        info = register(dummy_request)
+        from pyramid.httpexceptions import HTTPFound
+        self.assertIsInstance(info, HTTPFound)
+
+
 class TestForm(unittest.TestCase):
     def test_update_post_form(self):
         from .models.form_blogpost import BlogPostFormUpdate
         from webob.multidict import MultiDict
+        id = 3
+        title = "Blog Title"
+        body = "Blog Body"
         form = BlogPostFormUpdate(MultiDict([
             ('id', 3),
-            ('title', "Blog Title"),
-            ('body', "Blog Body")
+            ('title', title),
+            ('body', body)
         ]))
-        self.assertEqual(form.id.data, 3)
-        self.assertEqual(form.title.data, "Blog Title")
-        self.assertEqual(form.body.data, "Blog Body")
+        self.assertEqual(form.id.data, id)
+        self.assertEqual(form.title.data, title)
+        self.assertEqual(form.body.data, body)
