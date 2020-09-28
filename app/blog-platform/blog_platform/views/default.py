@@ -11,11 +11,6 @@ from ..services.user import UserService
 
 @view_config(route_name='index', renderer='../templates/index.jinja2')
 def index(request):
-    if request.authenticated_userid:
-        request.session['user'] = UserService.by_id(
-            request.authenticated_userid,
-            request=request
-        )
     page = int(request.params.get('page', 1))
     count = int(request.params.get('count', 5))
     paginator = PostService.get_paginator(request, page, count)

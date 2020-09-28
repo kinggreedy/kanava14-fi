@@ -2,6 +2,7 @@ from pyramid.config import Configurator
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.session import SignedCookieSessionFactory
+from pyramid.security import unauthenticated_userid
 
 
 def main(global_config, **settings):
@@ -24,4 +25,13 @@ def main(global_config, **settings):
         config.include('pyramid_jinja2')
         config.include('.routes')
         config.scan()
+        config.add_request_method(get_user, 'user', reify=True)
+
     return config.make_wsgi_app()
+
+
+def get_user(request):
+    user_id = unauthenticated_userid(request)
+    if user_id is not None:
+        from .services.user import UserService
+        return UserService.by_id(user_id, request)

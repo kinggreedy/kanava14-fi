@@ -8,6 +8,7 @@ from sqlalchemy import (
 )
 
 import datetime
+import re
 from webhelpers2.text import urlify
 from webhelpers2.date import distance_of_time_in_words
 
@@ -45,4 +46,17 @@ class Post(Base):
 
     @property
     def preview_content(self):
-        return self.body
+        list_words = self.body.split(" ")
+        collected_words = []
+        count = 0
+        max_words = 15
+        for word in list_words:
+            if re.sub(r'[^\w]', '', word) != "":
+                collected_words.append(re.sub(r'[^\w\',."-]', '', word))
+                count += 1
+                if count >= max_words + 1:
+                    break
+        if count > max_words:
+            collected_words[count - 1] = "..."
+
+        return " ".join(collected_words)
