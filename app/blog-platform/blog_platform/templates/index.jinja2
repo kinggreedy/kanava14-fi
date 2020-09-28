@@ -3,14 +3,56 @@
 {% block content %}
 <div class="content">
     {% if paginator.items %}
+      <div class="row">
+        <div class="col-sm-12 col-md-8">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {{ paginator.pager(
+                format='$link_previous~2~$link_next',
+                curpage_attr={'state':'active'},
+                dotdot_attr={'state':'disabled'},
+                symbol_previous='Previous',
+                symbol_next='Next',
+                link_tag=custom_link_tag
+              ) | safe }}
+            </ul>
+          </nav>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Post per page
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              {% for i in [5, 10, 20] %}
+                <a class="dropdown-item" href="{{ request.route_url('index', _query={'count':i}) }}">{{ i }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-columns">
         {% for entry in paginator.items %}
-            <article id="post-{{ entry.id }}">
-                <a href="{{ request.route_url('post', id=entry.id, slug=entry.slug) }}">
+          <div id="post-{{ entry.id }}" class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a class="text-decoration-none text-reset" href="{{ request.route_url('post', id=entry.id, slug=entry.slug) }}">
                     {{ entry.title }}
                 </a>
-            </article>
+              </h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ 'aaa' }} - {{ entry.created_in_words }}</h6>
+              <p class="card-text">{{ entry.preview_content }}</p>
+              {% if entry.edited %}
+                <p class="card-text"><small class="text-muted">
+                  Last updated
+                  <span class="edited-date" title="{{ entry.edited }}">{{ entry.edited_in_words }}</span>
+                  ago
+                </small></p>
+              {% endif %}
+            </div>
+          </div>
         {% endfor %}
-        {{ paginator.pager() | safe }}
+      </div>
     {% else %}
         <p>No blog entries found.</p>
     {% endif %}

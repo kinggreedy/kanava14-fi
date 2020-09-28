@@ -34,11 +34,15 @@ class Post(Base):
 
     @property
     def created_in_words(self):
-        return distance_of_time_in_words(self.created,
-                                         datetime.datetime.utcnow())
+        return self.created.strftime("%B %d, %Y")
 
     @property
     def edited_in_words(self):
         return None if self.edited is None \
             else distance_of_time_in_words(self.edited,
-                                           datetime.datetime.utcnow())
+                                           datetime.datetime.utcnow(),
+                                           granularity='minute')
+
+    @property
+    def preview_content(self):
+        return self.body

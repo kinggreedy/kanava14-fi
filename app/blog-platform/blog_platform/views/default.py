@@ -19,7 +19,27 @@ def index(request):
     page = int(request.params.get('page', 1))
     count = int(request.params.get('count', 5))
     paginator = PostService.get_paginator(request, page, count)
-    return {'paginator': paginator, 'project': 'Kanava14.fi'}
+    return {'paginator': paginator, 'project': 'Kanava14.fi', 'custom_link_tag': custom_link_tag}
+
+
+def custom_link_tag(item):
+    """
+    Create an A-HREF tag that points to another page.
+    """
+    from paginate import make_html_tag
+    text = item["value"]
+    target_url = item["href"]
+
+    if not item["href"] or item["type"] in ("span", "current_page"):
+        if item["attrs"]:
+            item["attrs"]["class"] = item["attrs"].get("class", "") + " page-link"
+            element = make_html_tag("span", **item["attrs"]) + text + "</span>"
+            element = make_html_tag("li", text=element, **{'class': 'page-item ' + item["attrs"]["state"]})
+        return element
+
+    element = make_html_tag("a", text=text, href=target_url, **{'class': 'page-link'}, **item["attrs"])
+    element = make_html_tag("li", text=element, **{'class': 'page-item'})
+    return element
 
 
 @view_config(route_name='login', renderer='../templates/login.jinja2')
