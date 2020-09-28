@@ -11,14 +11,13 @@ export DEBIAN_FRONTEND=noninteractive
 
 #TODO: create deploy account
 
-sudo mkdir -p /opt/python3test/blog-platform
-sudo chown -R vagrant:vagrant /opt/python3test
-ls -la /opt/python3test
-cd /opt/python3test
+sudo mkdir -p /opt/kanava14fi/blog-platform
+sudo chown -R deploy:deploy /opt/kanava14fi
+ls -la /opt/kanava14fi
+cd /opt/kanava14fi
 virtualenv venv
 virtualenv -p /usr/bin/python3.7 venv
 source venv/bin/activate
 
 pip install --upgrade pip setuptools
 
-pip install .
