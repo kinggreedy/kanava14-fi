@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FLAG=/opt/kanava14fi/flags/.2-0-setup-common
+FLAG=/opt/kanava14fi/flags/.2-0-2-setup-personal-config
 
 if [ -f "$FLAG" ]; then
   echo "$FLAG exist, script has already run!"
@@ -9,11 +9,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y dist-upgrade
-sudo apt-get -y autoremove
-sudo apt-get -y autoclean
+echo 'termcapinfo xterm ti@:te@' | tee -a ~/.screenrc
 
 # DONE
 sudo -u deploy touch "$FLAG"

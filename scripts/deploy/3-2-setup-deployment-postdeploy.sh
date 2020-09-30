@@ -9,5 +9,10 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-# TODO: Edit development.ini port 30486 listen to * and debugtoolbar.hosts
-pserve development.ini --reload
+# TODO: Edit production.ini and start the process
+pip install .
+alembic -c production.ini upgrade head
+initialize_blog_platform_db production.ini
+
+# DONE
+sudo -u deploy touch "$FLAG"

@@ -23,3 +23,6 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+
+# DONE
+sudo -u deploy touch "$FLAG"

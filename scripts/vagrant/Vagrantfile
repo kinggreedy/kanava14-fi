@@ -28,11 +28,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 80, host: 30480, auto_correct: true
   config.vm.network "forwarded_port", guest: 30486, host: 30486, auto_correct: true
-  config.vm.network "forwarded_port", guest: 443, host: 30443, auto_correct: true
-  config.vm.network "forwarded_port", guest: 8080, host: 30488, auto_correct: true
-  config.vm.network "forwarded_port", guest: 3000, host: 30430, auto_correct: true
   config.vm.network "forwarded_port", guest: 22, host: 10422, id: 'ssh', auto_correct: true
   config.vm.network "forwarded_port", guest: 10412, host: 10412, auto_correct: true
 
@@ -52,7 +48,8 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
   # config.vm.synced_folder ".", "/vagrant", type: "nfs"
   config.vm.synced_folder "./shared", "/vagrant"
-  # config.vm.synced_folder "./app", "/opt/python3test/blog_platform"  # Disable this if using unison-sync
+  config.vm.synced_folder "../..", "/opt/kanava14fi/app"                # Disable this if using unison-sync
+  config.vm.synced_folder "../../app", "/opt/kanava14fi/blog-platform"  # Disable this if using unison-sync
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -79,6 +76,5 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  config.vm.provision :shell, inline: 'echo "vagrant:vagrant" | chpasswd'    # Change the password
 
 end

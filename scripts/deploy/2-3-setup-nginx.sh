@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FLAG=/opt/kanava14fi/flags/.2-0-2-setup-personal-config
+FLAG=/opt/kanava14fi/flags/.2-3-setup-nginx
 
 if [ -f "$FLAG" ]; then
   echo "$FLAG exist, script has already run!"
@@ -9,5 +9,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-# add to .screenrc
-# termcapinfo xterm ti@:te@
+# TODO
+
+# DONE
+sudo -u deploy touch "$FLAG"
