@@ -20,7 +20,8 @@ def index(request):
     return {
         'paginator': paginator,
         'project': 'Kanava14.fi',
-        'custom_link_tag': custom_link_tag
+        'custom_link_tag': custom_link_tag,
+        'post_count': count,
     }
 
 
@@ -33,6 +34,7 @@ def custom_link_tag(item):
     target_url = item["href"]
 
     if not item["href"] or item["type"] in ("span", "current_page"):
+        element = ""
         if item["attrs"]:
             class_data = item["attrs"].get("class", "")
             item["attrs"]["class"] = class_data + " page-link"
