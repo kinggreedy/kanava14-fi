@@ -18,6 +18,7 @@ sudo usermod -aG sudo "$user"
 done
 
 # Create deployment path
+sudo mkdir -p /opt/kanava14fi/shared
 sudo mkdir -p /opt/kanava14fi/flags
 sudo mkdir -p /opt/kanava14fi/app
 sudo mkdir -p /opt/kanava14fi/blog-platform

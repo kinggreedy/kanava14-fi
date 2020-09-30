@@ -16,16 +16,5 @@ cat /etc/apt/sources.list.d/pgdg.list
 sudo apt-get update
 sudo apt-get -y install postgresql-11
 
-db_password=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
-db_username=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
-sudo -u postgres psql -c "CREATE DATABASE kanava14;"
-sudo -u postgres psql -c "
-    CREATE USER $db_username WITH ENCRYPTED PASSWORD '$db_password';
-    GRANT ALL PRIVILEGES ON DATABASE kanava14 TO $db_username;"
-
-sudo -u deploy touch "$FLAG"
-echo "$db_username" | tee -a $FLAG
-echo "$db_password" | tee -a $FLAG
-
 # DONE
 sudo -u deploy touch "$FLAG"

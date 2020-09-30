@@ -43,8 +43,9 @@ There are some assumption to be made:
   install the tools for the development such as flask8 and pytest  
 - Config development.ini  
 - `pserve development.ini --reload`  
-- run `./scripts/linting.sh` for linting and `./scripts/testing.sh` for testing   
-  
+- run `./scripts/linting.sh` for linting and `./scripts/testing.sh` for testing
+- If you want to use nginx in development, follow `scripts/devbox/2-0-4-setup-nginx.sh`
+
 ### 3. Production - Using github action as build server to deploy  
   
 - Add secrets to the github secret configuration  
@@ -52,7 +53,7 @@ There are some assumption to be made:
   
 ### 4. Production - Using devbox as build server  
   
-Dependencies:  
+Dependencies:
 - Make sure 2-0-3-setup-acl.sh scripts ran successfully  
 - Having at least 20GB HDD space  
 - Warning, this option will also require 16GB download   

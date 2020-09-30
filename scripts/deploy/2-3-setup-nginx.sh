@@ -9,7 +9,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-# TODO
+sudo apt-get -y install nginx
 
 # DONE
 sudo -u deploy touch "$FLAG"
