@@ -16,4 +16,4 @@ sudo apt-get -y autoremove
 sudo apt-get -y autoclean
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

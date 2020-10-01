@@ -12,4 +12,4 @@ export DEBIAN_FRONTEND=noninteractive
 sudo apt-get -y install nginx
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

@@ -37,4 +37,4 @@ echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfUwZYXeI35sOy0VY6wmBRltmEIPk158OPsM
 echo 'deploy ALL=(ALL) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

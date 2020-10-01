@@ -12,4 +12,4 @@ export DEBIAN_FRONTEND=noninteractive
 echo 'termcapinfo xterm ti@:te@' | tee -a ~/.screenrc
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

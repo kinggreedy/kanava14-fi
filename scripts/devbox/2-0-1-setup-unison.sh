@@ -26,4 +26,4 @@ sudo mv unison-fsmonitor /usr/bin
 sudo chmod +x /usr/bin/unison-fsmonitor
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

@@ -14,4 +14,4 @@ sudo apt-get -y install virtualenv
 sudo apt-get -y install python3.7 python3-pip
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"

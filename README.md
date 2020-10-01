@@ -19,32 +19,55 @@ There are some assumption to be made:
 ## Instruction on starting the project  
   
 ### 1. Development - Devbox/Vagrant  
-  
-- `cd scripts/vagrant`  
+
+#### Quick start
+- `cd scripts/vagrant`
+- `vagrant up`
+- Start development from app/blog-platform
+- Visit http://localhost:30486
+
+#### Customization
 - Modify Vagrantfile  
   - Remove the addon-script that you don't want to install.  
       You can also run them manually later  
   - In case you are installing unison,  
       Please change the vagrant password to be more secured  
   - Modify the port and shared folder (check config table below at section 6)  
-- `vagrant up`  
 - You can now develop the app and access to the ports you configured  
 - If you have installed unison, you can use example code `sync-app.ps1` and `sync-project.ps1`  
   to make unison sync with your vagrant project between Windows and Linux environment  
-  
+
 ### 2. Development - Only the app  
-  
+
+Assuming that you already installed required environments
+ - Python 3.7
+ - Postgres 11
+You can follow the scripts in scripts/deploy/2-* to setup them
+
+#### Requisite  
 - Copy blog-platform into the destination folder  
 - Follow setup commands in scripts/deploy/3-1-setup-deployment.sh to  
-  setup virtual environment and project folder  
-- `cp -r app/blog-platform /opt/kanava14fi/`  
-  (you can change the directory if you see fit)  
+  setup virtual environment and project folder
+    - ```
+      cd ..  
+      virtualenv venv
+      virtualenv -p /usr/bin/python3.7 venv
+      source venv/bin/activate
+      cd -
+      pip install --upgrade pip setuptools
+      ```
 - Follow setup commands in scripts/devbox/3-0-2-setup-devbox-postdeploy.sh to  
   install the tools for the development such as flask8 and pytest  
+  - ```
+    pip install .
+    pip install -e ".[develop]"
+    alembic -c development.ini upgrade head
+    initialize_blog_platform_db development.ini
+    ```
 - Config development.ini  
-- `pserve development.ini --reload`  
-- run `./scripts/linting.sh` for linting and `./scripts/testing.sh` for testing
-- If you want to use nginx in development, follow `scripts/devbox/2-0-4-setup-nginx.sh`
+- `pserve development.ini --reload` or `./scripts/devbox/start-pserve.sh`  
+- For linting, run `./scripts/linting.sh`  
+  For testing, run `./scripts/testing.sh`
 
 ### 3. Production - Using github action as build server to deploy  
   

@@ -17,4 +17,4 @@ sudo apt-get update
 sudo apt-get -y install postgresql-11
 
 # DONE
-sudo -u deploy touch "$FLAG"
+touch "$FLAG"
