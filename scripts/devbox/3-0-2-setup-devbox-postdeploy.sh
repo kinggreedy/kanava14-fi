@@ -26,6 +26,7 @@ pip install --upgrade pip setuptools
 
 cd /opt/kanava14fi/blog-platform
 pip install .
+pip install -e ".[develop]"
 
 sudo sed -i "s/__secret__/$session_secret/g" development.ini
 sudo sed -i "s/__username__/$db_username/g" development.ini

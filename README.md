@@ -61,10 +61,12 @@ You can follow the scripts in scripts/deploy/2-* to setup them
   - ```
     pip install .
     pip install -e ".[develop]"
+    ```
+    Config development.ini
+    ```
     alembic -c development.ini upgrade head
     initialize_blog_platform_db development.ini
     ```
-- Config development.ini  
 - `pserve development.ini --reload` or `./scripts/devbox/start-pserve.sh`  
 - For linting, run `./scripts/linting.sh`  
   For testing, run `./scripts/testing.sh`
@@ -79,6 +81,8 @@ You can follow the scripts in scripts/deploy/2-* to setup them
 Dependencies:
 - Make sure 2-0-3-setup-acl.sh scripts ran successfully  
 - Having at least 20GB HDD space  
+  By default, vagrant disk capacity are 10GB, you need to increase the disk size to 30GB at least
+  https://askubuntu.com/questions/317338/how-can-i-increase-disk-size-on-a-vagrant-vm
 - Warning, this option will also require 16GB download   
   
 Run:  
