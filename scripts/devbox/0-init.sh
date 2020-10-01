@@ -10,7 +10,7 @@ fi
 # Create deployment path
 sudo mkdir -p /opt/kanava14fi/shared
 sudo mkdir -p /opt/kanava14fi/flags
-sudo chown vagrant:vagrant /opt/kanava14fi
+sudo chown -R vagrant:vagrant /opt/kanava14fi
 
 # DONE
 touch "$FLAG"

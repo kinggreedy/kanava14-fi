@@ -22,11 +22,11 @@ virtualenv venv
 virtualenv -p /usr/bin/python3.7 venv
 source venv/bin/activate
 
-pip install --upgrade pip setuptools
+python -m pip install --upgrade pip setuptools
 
 cd /opt/kanava14fi/blog-platform
-pip install .
-pip install -e ".[develop]"
+python -m pip install .
+python -m pip install -e ".[develop]"
 
 sudo sed -i "s/__secret__/$session_secret/g" development.ini
 sudo sed -i "s/__username__/$db_username/g" development.ini
@@ -42,5 +42,3 @@ initialize_blog_platform_db development.ini
 touch "$FLAG"
 echo "$db_username" | tee -a $FLAG
 echo "$db_password" | tee -a $FLAG
-
-sudo -u postgres psql -c "CREATE DATABASE kanava14;"

@@ -22,10 +22,10 @@ virtualenv venv
 virtualenv -p /usr/bin/python3.7 venv
 source venv/bin/activate
 
-pip install --upgrade pip setuptools
+python -m pip install --upgrade pip setuptools
 
 cd /opt/kanava14fi/blog-platform
-pip install .
+python -m pip install .
 
 sudo sed -i "s/__secret__/$session_secret/g" production.ini
 sudo sed -i "s/__username__/$db_username/g" production.ini
