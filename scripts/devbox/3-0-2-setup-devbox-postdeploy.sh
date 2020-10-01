@@ -9,9 +9,9 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-db_password=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
-db_username=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
-session_secret=$(< /dev/urandom tr -dc _A-Za-z0-9 | head -c${1:-15})
+db_password=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
+db_username=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
+session_secret=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
 sudo -u postgres psql -c "CREATE DATABASE kanava14;"
 sudo -u postgres psql -c "
     CREATE USER $db_username WITH ENCRYPTED PASSWORD '$db_password';
@@ -42,3 +42,5 @@ initialize_blog_platform_db development.ini
 touch "$FLAG"
 echo "$db_username" | tee -a $FLAG
 echo "$db_password" | tee -a $FLAG
+
+sudo -u postgres psql -c "CREATE DATABASE kanava14;"
