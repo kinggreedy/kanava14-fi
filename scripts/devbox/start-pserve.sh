@@ -3,4 +3,4 @@
 cd /opt/kanava14fi
 source venv/bin/activate
 cd /opt/kanava14fi/blog-platform
-pserve development.ini --reload
+pserve development.ini --reload &

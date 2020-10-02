@@ -77,21 +77,16 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    sudo chmod -R +x /opt/kanava14fi/app/scripts
-    /bin/sh /opt/kanava14fi/app/scripts/devbox/0-init.sh
-    /bin/sh /opt/kanava14fi/app/scripts/deploy/2-0-setup-common.sh
-    /bin/sh /opt/kanava14fi/app/scripts/deploy/2-1-setup-python.sh
-    /bin/sh /opt/kanava14fi/app/scripts/deploy/2-2-setup-postgres.sh
-    /bin/sh /opt/kanava14fi/app/scripts/deploy/2-3-setup-nginx.sh
-    /bin/sh /opt/kanava14fi/app/scripts/devbox/2-0-1-setup-unison.sh
-    /bin/sh /opt/kanava14fi/app/scripts/devbox/2-0-2-setup-term-setting.sh
-    /bin/sh /opt/kanava14fi/app/scripts/devbox/2-0-3-setup-acl.sh
-    /bin/sh /opt/kanava14fi/app/scripts/devbox/3-0-2-setup-devbox-postdeploy.sh
-  SHELL
+  config.vm.provision "shell", path: "../devbox/0-init.sh", privileged: false
+  config.vm.provision "shell", path: "../deploy/2-0-setup-common.sh", privileged: false
+  config.vm.provision "shell", path: "../deploy/2-1-setup-python.sh", privileged: false
+  config.vm.provision "shell", path: "../deploy/2-2-setup-postgres.sh", privileged: false
+  config.vm.provision "shell", path: "../deploy/2-3-setup-nginx.sh", privileged: false
+  config.vm.provision "shell", path: "../devbox/2-0-1-setup-unison.sh", privileged: false
+  config.vm.provision "shell", path: "../devbox/2-0-2-setup-term-setting.sh", privileged: false
+  config.vm.provision "shell", path: "../devbox/2-0-3-setup-acl.sh", privileged: false
+  config.vm.provision "shell", path: "../devbox/3-0-2-setup-devbox-postdeploy.sh", privileged: false
 
-  config.vm.provision "shell", run: 'always', privileged: false, inline: <<-SHELL
-    /bin/sh /opt/kanava14fi/app/devbox/start-pserve.sh
-  SHELL
+  config.vm.provision "shell", path: "../devbox/start-pserve.sh", run: 'always', privileged: false
 
 end

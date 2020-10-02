@@ -10,7 +10,7 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 db_password=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
-db_username=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
+db_username=$(< /dev/urandom tr -dc a-z0-9 | head -c${1:-15})
 session_secret=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
 sudo -u postgres psql -c "CREATE DATABASE kanava14;"
 sudo -u postgres psql -c "
@@ -18,7 +18,6 @@ sudo -u postgres psql -c "
     GRANT ALL PRIVILEGES ON DATABASE kanava14 TO $db_username;"
 
 cd /opt/kanava14fi
-virtualenv venv
 virtualenv -p /usr/bin/python3.7 venv
 source venv/bin/activate
 
