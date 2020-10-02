@@ -9,8 +9,8 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
+db_username=$(< /dev/urandom tr -dc a-z | head -c${1:-1})$(< /dev/urandom tr -dc a-z0-9 | head -c${1:-14})
 db_password=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
-db_username=$(< /dev/urandom tr -dc a-z0-9 | head -c${1:-15})
 session_secret=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
 sudo -u postgres psql -c "CREATE DATABASE kanava14;"
 sudo -u postgres psql -c "

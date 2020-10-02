@@ -26,7 +26,6 @@ requires = [
     'wtforms',
     'paginate_sqlalchemy',
     'psycopg2-binary',
-    'supervisor',
 ]
 
 tests_require = [

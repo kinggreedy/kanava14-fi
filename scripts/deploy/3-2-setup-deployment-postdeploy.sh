@@ -9,16 +9,17 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Setup database user
+db_username=$(< /dev/urandom tr -dc a-z | head -c${1:-1})$(< /dev/urandom tr -dc a-z0-9 | head -c${1:-14})
 db_password=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
-db_username=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
 session_secret=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-15})
 sudo -u postgres psql -c "CREATE DATABASE kanava14;"
 sudo -u postgres psql -c "
     CREATE USER $db_username WITH ENCRYPTED PASSWORD '$db_password';
     GRANT ALL PRIVILEGES ON DATABASE kanava14 TO $db_username;"
 
+# Setup python env
 cd /opt/kanava14fi
-virtualenv venv
 virtualenv -p /usr/bin/python3.7 venv
 source venv/bin/activate
 
@@ -27,6 +28,7 @@ python -m pip install --upgrade pip setuptools
 cd /opt/kanava14fi/blog-platform
 python -m pip install .
 
+# Config production.ini
 sudo sed -i "s/__secret__/$session_secret/g" production.ini
 sudo sed -i "s/__username__/$db_username/g" production.ini
 sudo sed -i "s/__password__/$db_password/g" production.ini
@@ -37,11 +39,17 @@ sudo sed -i "s/__table__/kanava14/g" production.ini
 alembic -c production.ini upgrade head
 initialize_blog_platform_db production.ini
 
-sudo cp scripts/deploy/resources/nginx_kanava14.conf /etc/nginx/sites-available/
-sudo chmod 644 /etc/nginx/sites-available/nginx_kanava14.conf
-sudo ln -s /etc/nginx/sites-available/nginx_kanava14.conf /etc/nginx/sites-enabled/nginx_kanava14.conf
-sudo sed -i 's/# server_name  __additional_server_name__;/server_name  kanava14.kinggreedy.com;/g' /etc/ssh/sshd_config
+# Config nginx
+sudo ln -s /opt/kanava14fi/blog-platform/blog_platform /var/www/kanava14fi
+sudo ln -s /opt/kanava14fi/blog-platform/nginx.conf /etc/nginx/sites-available/kanava14fi.conf
+sudo chmod 644 /etc/nginx/sites-available/kanava14fi.conf
+sudo ln -s /etc/nginx/sites-available/kanava14fi.conf /etc/nginx/sites-enabled/kanava14fi.conf
+mkdir -p /opt/kanava14fi/shared/log
 sudo service nginx reload
+
+# Config supervisor
+sudo ln -s  /opt/kanava14fi/blog-platform/supervisord.conf /etc/supervisor/conf.d/kanava14fi.conf
+sudo service supervisor restart
 
 # DONE
 touch "$FLAG"

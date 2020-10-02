@@ -9,9 +9,12 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-sudo apt-get -y install python-pip
-sudo apt-get -y install virtualenv
-sudo apt-get -y install python3.7 python3-pip
+sudo apt-get -y install \
+    python-pip \
+    python3.7 \
+    python3-pip \
+    virtualenv \
+    supervisor
 
 # DONE
 touch "$FLAG"

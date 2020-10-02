@@ -9,7 +9,8 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-sudo mkdir -p /opt/kanava14fi/shared
+# Create deployment path
+sudo mkdir -p /opt/kanava14fi/shared/log
 sudo mkdir -p /opt/kanava14fi/blog-platform
 sudo chown -R deploy:deploy /opt/kanava14fi
 
