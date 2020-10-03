@@ -39,7 +39,7 @@ file_template = %%(year)d%%(month).2d%%(day).2d_%%(rev)s
 
 [server:main]
 use = egg:waitress#main
-listen = *:30486
+listen = *:8080
 
 ###
 # logging configuration

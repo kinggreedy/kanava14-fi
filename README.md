@@ -24,7 +24,7 @@ There are some assumption to be made:
 - `cd scripts/vagrant`
 - `vagrant up`
 - Start development from app/blog-platform
-- Visit http://localhost:30486
+- Visit http://localhost:8080
 
 #### Customization
 - Modify Vagrantfile  
@@ -37,7 +37,18 @@ There are some assumption to be made:
 - If you have installed unison, you can use example code `sync-app.ps1` and `sync-project.ps1`  
   to make unison sync with your vagrant project between Windows and Linux environment  
 
-### 2. Development - Only the app  
+### 2. Development - Docker
+
+- `cd scripts/docker`
+- Customize .env file
+- `sudo docker-compose build`
+- `sudo docker-compose up -d`
+- Start development from app/blog-platform
+- Visit http://localhost:8080
+
+Note: Act tool (https://github.com/nektos/act) won't be available inside this docker development 
+
+### 3. Development - Only the app  
 
 Assuming that you already installed required environments
  - Python 3.7
@@ -62,7 +73,7 @@ You can follow the scripts in scripts/deploy/2-* to setup them
     pip install .
     pip install -e ".[develop]"
     ```
-    Config development.ini
+    `cp development.ini.sample development.ini` and Config development.ini
     ```
     alembic -c development.ini upgrade head
     initialize_blog_platform_db development.ini
@@ -71,12 +82,12 @@ You can follow the scripts in scripts/deploy/2-* to setup them
 - For linting, run `./scripts/linting.sh`  
   For testing, run `./scripts/testing.sh`
 
-### 3. Production - Using github action as build server to deploy  
+### 4. Production - Using github action as build server to deploy  
   
 - Add secrets to the github secret configuration  
 - To make a new release, make a new commit in /release branch  
   
-### 4. Production - Using devbox as build server  
+### 5. Production - Using devbox as build server  
   
 Dependencies:
 - Make sure 2-0-3-setup-acl.sh scripts ran successfully  
@@ -95,17 +106,18 @@ Example:
   
 #TODO: secret  
   
-### 5. Production - Manually deploy  
+### 6. Production - Manually deploy  
   
 - Follow scripts/deploy/2-* to install python, postgres and nginx  
 - Follow scripts/deploy/3-1-setup-deployment.sh to install the project  
-- Upload the directory `app/blog-development` to correct location on server  
+- Upload the directory `app/blog-development` to correct location on server
+- `cp production.ini.sample production.ini`  
 - Config production.ini as you see fit  
 - Follow scripts/deploy/3-2-setup-postdeployment.sh to finish installing and  
   config the project  
 - Follow scripts/deploy/4-1-run-predeploy.sh and 4-2-run-postdeploy.sh each time  
   you deploy a new change  
-  
+
 ### 6. Customization  
   
 #TODO  
@@ -121,5 +133,4 @@ Example:
 - More testing, at least 80% test coverage  
 - More unit test  
 - RestAPI with swagger  
-- Docker, to enable the project can be deployed to kubernetes cluster more efficient  
 - Load balancing with multiple server and database nodes

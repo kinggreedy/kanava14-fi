@@ -10,7 +10,6 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 # SSH
-echo "vagrant:vagrant" | chpasswd  #TODO: change this
 sudo sed -i 's/PasswordAuthentication no/#PasswordAuthentication no/g' /etc/ssh/sshd_config
 sudo sed -i 's/PubkeyAuthentication no/#PubkeyAuthentication no/g' /etc/ssh/sshd_config
 sudo sed -i 's/RSAAuthentication no/#RSAAuthentication no/g' /etc/ssh/sshd_config

@@ -1,0 +1,35 @@
+version: "3"
+services:
+  app:
+    container_name: app
+    build:
+      context: ../..
+      dockerfile: scripts/docker/Dockerfile
+      args:
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+    ports:
+      - 8080:8080
+    volumes:
+      - log_data_01:/opt/kanava14fi/shared/log
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:11
+    environment:
+      POSTGRES_DB: "kanava14"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASS}"
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  log_data_01: {}
+  db_data: {}
