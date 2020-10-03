@@ -29,6 +29,7 @@ cd /opt/kanava14fi/blog-platform
 python -m pip install .
 
 # Config production.ini
+/bin/cp -rf production.ini.sample production.ini
 sudo sed -i "s/__secret__/$session_secret/g" production.ini
 sudo sed -i "s/__username__/$db_username/g" production.ini
 sudo sed -i "s/__password__/$db_password/g" production.ini

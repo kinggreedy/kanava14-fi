@@ -39,6 +39,8 @@ There are some assumption to be made:
 
 ### 2. Development - Docker
 
+Requires docker-compose
+
 - `cd scripts/docker`
 - Customize .env file
 - `sudo docker-compose build`
@@ -50,13 +52,12 @@ Note: Act tool (https://github.com/nektos/act) won't be available inside this do
 
 ### 3. Development - Only the app  
 
-Assuming that you already installed required environments
+Assuming that you have already installed required environments
  - Python 3.7
  - Postgres 11
 You can follow the scripts in scripts/deploy/2-* to setup them
 
 #### Requisite  
-- Copy blog-platform into the destination folder  
 - Follow setup commands in scripts/deploy/3-1-setup-deployment.sh to  
   setup virtual environment and project folder
     - ```
@@ -67,6 +68,7 @@ You can follow the scripts in scripts/deploy/2-* to setup them
       cd -
       pip install --upgrade pip setuptools
       ```
+- Copy blog-platform into the destination folder  
 - Follow setup commands in scripts/devbox/3-0-2-setup-devbox-postdeploy.sh to  
   install the tools for the development such as flask8 and pytest  
   - ```
@@ -105,9 +107,17 @@ Example:
 - sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j deploy  
   
 #TODO: secret  
-  
-### 6. Production - Manually deploy  
-  
+
+### 6. Production - Scripted deploy on traditional server if repo secret / remote ssh script running is not supported
+
+This method expose what command is going to be run on the server.
+
+- Edit password & ssh key and run `scripts/deploy/0-init.sh` to create new deploy account and folders
+- Copy project to `/opt/kanava14fi/app`
+- Run `scripts/deploy/1-master-run.sh` on every new deployment
+
+### 7. Production - Deploy manually
+
 - Follow scripts/deploy/2-* to install python, postgres and nginx  
 - Follow scripts/deploy/3-1-setup-deployment.sh to install the project  
 - Upload the directory `app/blog-development` to correct location on server
@@ -118,7 +128,7 @@ Example:
 - Follow scripts/deploy/4-1-run-predeploy.sh and 4-2-run-postdeploy.sh each time  
   you deploy a new change  
 
-### 6. Customization  
+### 8. Customization  
   
 #TODO  
   

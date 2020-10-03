@@ -27,6 +27,7 @@ cd /opt/kanava14fi/blog-platform
 python -m pip install .
 python -m pip install -e ".[develop]"
 
+/bin/cp -rf development.ini.sample development.ini
 sudo sed -i "s/__secret__/$session_secret/g" development.ini
 sudo sed -i "s/__username__/$db_username/g" development.ini
 sudo sed -i "s/__password__/$db_password/g" development.ini
