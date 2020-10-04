@@ -1,7 +1,10 @@
 
+
 # Welcome to Kanava14.fi  
 This project kicks start the revolution for social platform 4.0      
 or so....  
+  
+Preview https://kanava14.kinggreedy.com/    
   
 # Quick start
 
@@ -12,21 +15,23 @@ or so....
 
 # Architecture story  
   
-Although the test only requires us to develop a platform, I would like to put the context of starting a brand new website, from a new IT company, for a new client that does not have a website before, while providing a small CD/CI solution.  
-This approach cause a small problem with the architecture and repository management, because this repository actually host 3 components at once (which should have their own repo): application, devbox, deployment scripts. This approach also requires me to not over engineering while keeping everything clean and robust.   
+Although the test only requires us to develop a platform, I would like to put the context of starting a brand new website for a new client that does not have a website before, providing a small CD/CI solution without any previous tools for DevOps.  
+This approach cause a small problem with the architecture and repository management, because this repository actually host 3 components at once (which should have their own repo): application, devbox, deployment scripts. I tried to not over engineering while keeping everything clean and robust.   
   
 There are some assumption to be made:  
-- Production server is a virtual private server (not having Kubernetes capability), like using DigitalOcean, Upcloud, Linode, or any VPS similar providers  
+- Production server could be a virtual private server (not having Kubernetes capability), like using DigitalOcean, Upcloud, Linode, or any VPS similar providers
+- There is no information if production server can install docker or not  
 - The production server is newly installed and is dedicated to only this project  
 - For shared environment, system administrator can use the scripts in scripts/deploy and the description below as assistance  
   - 2-*-.sh scripts: Dependencies installation commands  
   - 3-*-.sh scripts: Project setup commands  
   - 4-*-.sh scripts: Project deploy commands  
 
-Branching model
+# Branching model
 
 - Trunk based
-- Production deploy will use latest commit from branch releases/x.x
+- Production server will use latest commit from branch `releases/x.x`
+- Pull request to `master` branch will be tested for code styling and unit test
 
 ## Instruction on starting the project  
   
@@ -99,8 +104,8 @@ You can follow the scripts in scripts/deploy/2-* to setup them
 ### 4. Production - Using github action as build server to deploy  
   
 - Edit password & ssh key and run `scripts/deploy/0-init.sh` to create new deploy account and folders
-- Add secrets to the github secret configuration  
-- Run action release, or make a new release by pushing to release/* branch  
+- Add secrets to the github secret configuration  (Please check customization below)
+- Run action release, or make a new release by pushing to `release/*` branch  
 
 ### 5. Production - Using devbox as build server  
   
@@ -121,9 +126,7 @@ Example:
 - `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j release`  
 - `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j deploy`  
 
-### 6. Production - Scripted deploy on traditional server if repo secret / remote ssh script running is not supported
-
-This method expose what command is going to be run on the server.
+### 6. Production - Scripted deploy
 
 - Edit password & ssh key and run `scripts/deploy/0-init.sh` to create new deploy account and folders
 - Copy project to `/opt/kanava14fi/app`
@@ -143,17 +146,62 @@ This method expose what command is going to be run on the server.
 
 ### 8. Customization  
   
-#TODO  
+#### app/blog-platform/development.ini or app/blog-platform/production.ini
   
 |Key             |Description                    |Default value                |  
 |----------------|-------------------------------|-----------------------------|  
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |  
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |  
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|  
+| `project.name` | Project name (title, logo) | `Kanava14.fi` |  
+| `userauthentication.secret` | Secret for user session and cookie | Randomized upon setup |  
+| `sqlalchemy.url` | URL for DB connection | Randomized upon setup (For Docker - set from `scripts/docker/.env` upon setup) |  
+| `listen` | Handle host:port request | For development: `*:8080`, For production: take from supervisord, default values are `5000` & `5001` |  
+
+#### app/blog-platform/nginx.conf - Configuration for nginx
+*Note: Symlinked to site-available & site-enabled upon deployment*
+#### app/blog-platform/supervisord.conf - Configuration for supervisord
+
+Change `command` under `[program:myapp]` to have different backend port than 5000 & 5001
+
+#### scripts/docker/.env - Configuration for docker development
+
+|Key             |Description                    |Default value                |  
+|----------------|-------------------------------|-----------------------------|  
+| `DB_USER` | Database username | |  
+| `DB_PASS` | Database password | |  
+
+#### scripts/vagrant/Vagrantfile - Configuration for vagrant development
+
+|Key             |Description                    |Default value                |  
+|----------------|-------------------------------|-----------------------------|  
+| `config.vm.network "forwarded_port"` | Forwarding port from guest to host | port `8080` (http) and `22` (ssh) |  
+| `config.vm.synced_folder` | Shared folders between host and guest <br> Remove this value if planning to use unison | `"."` => `"/vagrant"` <br> `"../.."` => `"/opt/kanava14fi/app"` <br> `"../../app/blog-platform"` => `"/opt/kanava14fi/blog-platform"` | 
+| `config.vm.provision "shell"` | Vagrant provision script, scripts with format under `scripts/devbox/*-0-*` are optional | | 
+| `echo "vagrant:vagrant" | chpasswd` | Default password for vagrant if using unison, change to a more challenging password before exposing ssh to public | | 
+
+#### scripts/vagrant/sync-app.ps1 or scripts/vagrant/sync-project.ps1 - Configuration for unison sync with Vagrant development
+
+|Key             |Description                    |Default value                |  
+|----------------|-------------------------------|-----------------------------|  
+| `$project` | Project folder | `blog-platform` |  
+| `$server` | Vagrant devbox ip | |  
+| `$username` | Vagrant login username | `vagrant` |  
+| `$password` | Vagrant login password | `vagrant` |  
+| `$port` | Vagrant devbox port | `22` | 
+| `$project_host_dir` | Project location on host | `../../app/$project` | 
+| `$project_guest_dir` | Project location on guest| `ssh://$server//opt/kanva14fi/$project` | 
+
+#### Github Secrets or scripts/deploy/.secrets - Configuration for using Github Secrets or command line act to build and deploy
+
+|Key             |Description                    |Default value                |  
+|----------------|-------------------------------|-----------------------------|  
+| `PRODUCTION_HOST` | Production server ip | |  
+| `PRODUCTION_PORT` | Production server ssh port | |  
+| `PRODUCTION_SSH_USER` | Deploy username | |  
+| `PRODUCTION_SSH_KEY` | Deploy ssh private key in base64 format `base64 -w 0 <privatekey>` |  |  
+| `PRODUCTION_SSH_PASSWORD` | Deploy ssh password | |  
+    
+# Roadmap  
   
-# Roadmap (or - what should I do if I can spent more time)  
-  
-- More testing, at least 80% test coverage  
 - More unit test  
-- RestAPI with swagger  
+- RestAPI
+- Deployment with docker and kubernetes
 - Load balancing with multiple server and database nodes

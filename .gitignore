@@ -1,3 +1,4 @@
 scripts/vagrant/.vagrant/
 app/blog-platform/development.ini
 app/blog-platform/production.ini
+.coverage
