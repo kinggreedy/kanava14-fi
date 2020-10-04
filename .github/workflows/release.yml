@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     name: Deploy
-    # needs: release
+    needs: release
     runs-on: ubuntu-latest
     env:
       SERVER_ADDRESS: ${{ secrets.PRODUCTION_HOST }}
