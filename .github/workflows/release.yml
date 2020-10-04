@@ -35,9 +35,9 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
-          with:
-            name: release
-            path: release.zip
+        with:
+          name: release
+          path: release.zip
 
   deploy:
     name: Deploy
@@ -55,8 +55,8 @@ jobs:
 
       - name: Get artifact
         uses: actions/download-artifact@v2
-          with:
-            name: release
+        with:
+          name: release
 
       - name: Setup server
         run: |-
