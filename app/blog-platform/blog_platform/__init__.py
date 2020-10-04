@@ -2,7 +2,6 @@ from pyramid.config import Configurator
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.session import SignedCookieSessionFactory
-from pyramid.security import unauthenticated_userid
 
 
 def main(global_config, **settings):
@@ -31,7 +30,7 @@ def main(global_config, **settings):
 
 
 def get_user(request):
-    user_id = unauthenticated_userid(request)
+    user_id = request.unauthenticated_userid
     if user_id is not None:
         from .services.user import UserService
         return UserService.by_id(user_id, request)

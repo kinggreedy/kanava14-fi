@@ -3,6 +3,13 @@
 This project kicks start the revolution for social platform 4.0      
 or so....  
   
+# Quick start
+
+- `cd scripts/vagrant`
+- `vagrant up`
+- Start development from app/blog-platform
+- Visit http://localhost:8080
+
 # Architecture story  
   
 Although the test only requires us to develop a platform, I would like to put the context of starting a brand new website, from a new IT company, for a new client that does not have a website before, while providing a small CD/CI solution.  
@@ -25,7 +32,6 @@ Branching model
   
 ### 1. Development - Devbox/Vagrant  
 
-#### Quick start
 - `cd scripts/vagrant`
 - `vagrant up`
 - Start development from app/blog-platform
@@ -139,7 +145,7 @@ This method expose what command is going to be run on the server.
   
 #TODO  
   
-|                |ASCII                          |HTML                         |  
+|Key             |Description                    |Default value                |  
 |----------------|-------------------------------|-----------------------------|  
 |Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |  
 |Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |  

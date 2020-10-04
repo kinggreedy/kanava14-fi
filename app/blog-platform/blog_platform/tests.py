@@ -79,6 +79,7 @@ class TestRegisterView(BaseTest):
     def test_register_user(self):
         from .views.default import register
         from webob.multidict import MultiDict
+        from pyramid.httpexceptions import HTTPFound
         username = 'user'
         password = 'pass'
         name = 'name'
@@ -91,7 +92,6 @@ class TestRegisterView(BaseTest):
             ])
         )
         info = register(dummy_request)
-        from pyramid.httpexceptions import HTTPFound
         self.assertIsInstance(info, HTTPFound)
 
 
@@ -110,3 +110,57 @@ class TestForm(unittest.TestCase):
         self.assertEqual(form.id.data, id)
         self.assertEqual(form.title.data, title)
         self.assertEqual(form.body.data, body)
+
+
+class TestPostBlog(BaseTest):
+    def setUp(self):
+        super(TestPostBlog, self).setUp()
+        self.init_database()
+
+    def test_post_view(self):
+        from .views.post import post_view
+        from webob.multidict import MultiDict
+        from .models import Post, User
+
+        author = User(id=2, username="author_test", password="author_test", name="Author Test")
+        blog = Post(id=2, title="Test Title", body="Test Content", author=author.id)
+        self.session.add(author)
+        self.session.add(blog)
+        dummy_request = testing.DummyRequest(
+            dbsession=self.session,
+            matchdict=MultiDict([
+                ('id', blog.id)
+            ])
+        )
+        info = post_view(dummy_request)
+        self.assertEqual(info['entry'], blog)
+        self.assertEqual(info['author'], author)
+
+    def test_post_create(self):
+        from .views.post import post_create
+        from webob.multidict import MultiDict
+        from .models import Post, User
+        from pyramid.httpexceptions import HTTPFound
+
+        author = User(id=2, username="author_test", password="author_test", name="Author Test")
+        title = "Test Title"
+        body = "Test Content"
+
+        self.session.add(author)
+        self.config.testing_securitypolicy(userid=author.id)
+        self.config.add_route('index', '/')
+
+        dummy_request = testing.DummyRequest(
+            dbsession=self.session,
+            post=MultiDict([
+                ('title', title),
+                ('body', body),
+            ]),
+        )
+
+        info = post_create(dummy_request)
+        blog_db = self.session.query(Post).get(1)
+
+        self.assertIsInstance(info, HTTPFound)
+        self.assertEqual(blog_db.title, title)
+        self.assertEqual(blog_db.body, body)
