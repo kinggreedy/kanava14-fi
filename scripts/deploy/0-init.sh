@@ -2,7 +2,7 @@
 
 FLAG=/opt/kanava14fi/flags/.0-init
 PASSWD="deploy"
-PUBLIC_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfUwZYXeI35sOy0VY6wmBRltmEIPk158OPsMwwGEGrmLQUtLQKF/e8N16NbxHfie3dehoD/dxPBX/OnIuiYsD7A5vC2h6ZYl+lYwrFgbKwIBEe5qrrLECxASIIQHaVQiHRzmBr6FNmcaZEg1QmgDuc+GVtL3hYDsConyUKpen12gyS58b+x5PlgwtAqnXzNfadfX2b/XuaVE/4EBfiFDlo/2IxbJxQi6DEqM91BWhp05LvpILTmY01jkV/TKP6AkGTWy8p+BvuuWiTTO8uuesEA7uTaLR2svuY949b3RKmzEZAHR1PE3Y1a8PJrCTIZ23ArLM6ThzgOm6W1BAFoy4lglV75fiBaqEWjCbLBeyQBLye5DWk9Gb34AIXwr5Yjix+L9xydA/PwP7/icJcb3XKm1l+ubIF/Q8X0UjY0QhCf+KcxsHoo79ibAGQankO3epX2MAEjRBAsVjNiOnl9eq2n8S8cAnkOvQuQLQ1666FH39EFRGjr1OHGvZyNQfbkuM="
+PUBLIC_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlpws4rTla3qLPY1UerUamLCxME5Um62NZDkGk13LboiM3WKkQrrkLyHBIreH+H0sWiVAWwOMtrwtIthqqys9I0eb377BAA3gRrlzS14l1P0x5Swzhe0qhq1aibr3piNjIEeciw9Ri9t6FT+1jng0kl5pXQjoSPIqIMu3ZqUAb1KAKm60LkReiIHEwr/ElWKCfcLXwb9OLlKPQIzlhZYJ6prNILE8fp1z2FYRoUmc4jnRwlAwnxReT9l63P6OJHfe2Cq2uyjR5F8wBPAn6lbb6Uz5fEae8p6l1MrX5HM8v0z3s57Cw30UFdmCnlChgF7/0n8lAhzQjqw9wh3KnFrwcQ== deploy"
 
 if [ -f "$FLAG" ]; then
   echo "$FLAG exist, script has already run!"
@@ -26,7 +26,7 @@ done
 # Create deployment path
 sudo mkdir -p /opt/kanava14fi/shared/log
 sudo mkdir -p /opt/kanava14fi/flags
-sudo mkdir -p /opt/kanava14fi/app
+sudo mkdir -p /opt/kanava14fi/app/scripts/deploy
 sudo mkdir -p /opt/kanava14fi/blog-platform
 sudo chown -R deploy:deploy /opt/kanava14fi
 
@@ -43,4 +43,4 @@ echo "$PUBLIC_KEY" | sudo tee -a /home/deploy/.ssh/authorized_keys
 echo 'deploy ALL=(ALL) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
 
 # DONE
-touch "$FLAG"
+sudo -u deploy touch "$FLAG"

@@ -10,12 +10,8 @@ if [ ! -d "$FLAG" ]; then
 fi
 
 scripts=(
-  "2-0-setup-common.sh"
-  "2-1-setup-python.sh"
-  "2-2-setup-postgres.sh"
-  "2-3-setup-nginx.sh"
-  "3-1-setup-deployment.sh"
-  "4-1-run-predeploy.sh"
+  "3-2-setup-deployment-postdeploy.sh"
+  "4-2-run-postdeploy.sh"
 )
 
 for script_name in ${scripts[*]}; do
