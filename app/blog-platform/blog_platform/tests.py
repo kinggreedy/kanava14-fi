@@ -122,8 +122,14 @@ class TestPostBlog(BaseTest):
         from webob.multidict import MultiDict
         from .models import Post, User
 
-        author = User(id=2, username="author_test", password="author_test", name="Author Test")
-        blog = Post(id=2, title="Test Title", body="Test Content", author=author.id)
+        author = User(id=2,
+                      username="author_test",
+                      password="author_test",
+                      name="Author Test")
+        blog = Post(id=2,
+                    title="Test Title",
+                    body="Test Content",
+                    author=author.id)
         self.session.add(author)
         self.session.add(blog)
         dummy_request = testing.DummyRequest(
@@ -142,7 +148,10 @@ class TestPostBlog(BaseTest):
         from .models import Post, User
         from pyramid.httpexceptions import HTTPFound
 
-        author = User(id=2, username="author_test", password="author_test", name="Author Test")
+        author = User(id=2,
+                      username="author_test",
+                      password="author_test",
+                      name="Author Test")
         title = "Test Title"
         body = "Test Content"
 
