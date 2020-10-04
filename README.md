@@ -15,7 +15,12 @@ There are some assumption to be made:
   - 2-*-.sh scripts: Dependencies installation commands  
   - 3-*-.sh scripts: Project setup commands  
   - 4-*-.sh scripts: Project deploy commands  
-  
+
+Branching model
+
+- Trunk based
+- Production deploy will use latest commit from branch releases/x.x
+
 ## Instruction on starting the project  
   
 ### 1. Development - Devbox/Vagrant  
@@ -52,12 +57,13 @@ Note: Act tool (https://github.com/nektos/act) won't be available inside this do
 
 ### 3. Development - Only the app  
 
+#### Requisites
 Assuming that you have already installed required environments
  - Python 3.7
  - Postgres 11
 You can follow the scripts in scripts/deploy/2-* to setup them
 
-#### Requisite  
+#### Deploy
 - Follow setup commands in scripts/deploy/3-1-setup-deployment.sh to  
   setup virtual environment and project folder
     - ```
@@ -86,27 +92,28 @@ You can follow the scripts in scripts/deploy/2-* to setup them
 
 ### 4. Production - Using github action as build server to deploy  
   
+- Edit password & ssh key and run `scripts/deploy/0-init.sh` to create new deploy account and folders
 - Add secrets to the github secret configuration  
-- To make a new release, make a new commit in /release branch  
-  
+- Run action release, or make a new release by pushing to release/* branch  
+
 ### 5. Production - Using devbox as build server  
   
-Dependencies:
+Requisites:
 - Make sure 2-0-3-setup-acl.sh scripts ran successfully  
 - Having at least 20GB HDD space  
   By default, vagrant disk capacity are 10GB, you need to increase the disk size to 30GB at least
   https://askubuntu.com/questions/317338/how-can-i-increase-disk-size-on-a-vagrant-vm
 - Warning, this option will also require 16GB download   
-  
+- Edit secrets configuration in `scripts/deploy/.secrets`
+
 Run:  
-- sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j <event>  
+- `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j <event>` 
   
 Example:  
-- sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j build  
-- sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j pull_request  
-- sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 -j deploy  
-  
-#TODO: secret  
+- `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j build`  
+- `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j pull_request`
+- `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j release`  
+- `sudo act -P ubuntu-latest=nektos/act-environments-ubuntu:18.04 --secret-file scripts/deploy/.secrets -j deploy`  
 
 ### 6. Production - Scripted deploy on traditional server if repo secret / remote ssh script running is not supported
 

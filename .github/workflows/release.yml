@@ -29,10 +29,68 @@ jobs:
         run: |-
           . scripts/build/testing.sh
 
-      - name: Compiling
+      - name: Creating artifacts
         run: |-
-          echo "Compiling..."
+          zip -r release.zip app/blog-platform
 
-      - name: Deploy
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+          with:
+            name: release
+            path: release.zip
+
+  deploy:
+    name: Deploy
+    needs: release
+    runs-on: ubuntu-latest
+    env:
+      - SERVER_ADDRESS: ${{ secrets.PRODUCTION_HOST }}
+      - SERVER_PORT: ${{ secrets.PRODUCTION_PORT }}
+      - SSH_USER: ${{ secrets.PRODUCTION_SSH_USER }}
+      - SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+      - SSH_PASSWORD: ${{ secrets.PRODUCTION_SSH_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get artifact
+        uses: actions/download-artifact@v2
+          with:
+            name: release
+
+      - name: Setup server
         run: |-
-          echo "Deploying..."
+          ssh $SERVER_ADDRESS -l $SSH_USER -p $SERVER_PORT 'bash -s' < $(cat \
+            scripts/deploy/2-0-setup-common.sh \
+            scripts/deploy/2-1-setup-python.sh \
+            scripts/deploy/2-2-setup-postgres.sh \
+            scripts/deploy/2-3-setup-nginx.sh \
+            scripts/deploy/3-1-setup-deployment.sh \
+          )
+
+      - name: Run pre deploy
+        run: |-
+          ssh $SERVER_ADDRESS -l $SSH_USER -p $SERVER_PORT 'bash -s' < $(cat \
+            scripts/deploy/4-1-run-predeploy.sh \
+          )
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          port: ${{ secrets.PRODUCTION_PORT }}
+          username: ${{ secrets.PRODUCTION_SSH_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          source: "release.zip"
+          target: "/opt/kanava14/release.zip"
+
+      - name: Deploy artifact
+        run: |-
+          ssh $SERVER_ADDRESS -l $SSH_USER -p $SERVER_PORT 'unzip -q -o /opt/kanava14/release.zip -d /opt/kanava14fi/blog-platform'
+
+      - name: Running post deploy scripts
+        run: |-
+          ssh $SERVER_ADDRESS -l $SSH_USER -p $SERVER_PORT 'bash -s' < $(cat \
+            scripts/deploy/3-2-setup-deployment-postdeploy.sh \
+            scripts/deploy/4-2-run-postdeploy.sh \
+          )
