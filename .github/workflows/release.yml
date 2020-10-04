@@ -45,7 +45,8 @@ jobs:
 
       - name: Private key setup
         run: |-
-          echo -e $SSH_KEY > ./pkey && chmod 600 ./pkey
+          echo "$SSH_KEY" | base64 -d > ./pkey
+          chmod 600 ./pkey
 
       - name: Deploy server tools
         run: |-
