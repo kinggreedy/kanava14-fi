@@ -31,7 +31,3 @@ jobs:
       - name: Run tests
         run: |-
           . scripts/build/testing.sh
-
-      - name: Dry compiling
-        run: |-
-          echo "Compiling..."

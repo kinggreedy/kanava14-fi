@@ -10,7 +10,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'plaster_pastedeploy',
-    'pyramid',
+    'pyramid == 1.10.4',
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'waitress',
@@ -34,6 +34,20 @@ tests_require = [
     'pytest-cov',
 ]
 
+lint_require = [
+    'flake8',
+]
+
+build_require = [
+]
+
+develop_require = [
+    'cookiecutter',
+    *build_require,
+    *tests_require,
+    *lint_require,
+]
+
 setup(
     name='blog_platform',
     version='0.0',
@@ -54,6 +68,9 @@ setup(
     zip_safe=False,
     extras_require={
         'testing': tests_require,
+        'linting': lint_require,
+        'develop': develop_require,
+        'build': build_require,
     },
     install_requires=requires,
     entry_points={
