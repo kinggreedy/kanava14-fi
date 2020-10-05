@@ -11,6 +11,7 @@ fi
 
 scripts=(
   "3-2-setup-deployment-postdeploy.sh"
+  "3-3-setup-langdetect-postdeploy.sh"
   "4-2-run-postdeploy.sh"
 )
 

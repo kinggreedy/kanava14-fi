@@ -14,6 +14,7 @@ scripts=(
   "2-1-setup-python.sh"
   "2-2-setup-postgres.sh"
   "2-3-setup-nginx.sh"
+  "2-4-setup-redis.sh"
   "3-1-setup-deployment.sh"
   "4-1-run-predeploy.sh"
 )

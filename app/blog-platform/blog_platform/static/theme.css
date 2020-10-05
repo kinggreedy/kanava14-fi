@@ -77,7 +77,7 @@ p {
 .article-view .article-meta .date {
   padding-left: 12px;
 }
-.article-view .article-meta .edited {
+.article-view .article-meta .edited, .article-view .article-meta .lang {
   font-style: italic;
 }
 @media (min-width: 768px) {

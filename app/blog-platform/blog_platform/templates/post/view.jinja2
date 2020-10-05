@@ -7,11 +7,11 @@
 {% block content %}
 <div class="content">
   <div class="article-view">
-    <a class="article-title text-decoration-none text-reset" href="{{ request.route_url('post', id=entry.id, slug=entry.slug) }}">
+    <a class="article-title text-decoration-none text-reset" href="{{ request.route_path('post', id=entry.id, slug=entry.slug) }}">
       <h1 class="article-title-header">{{ entry.title }}</h1>
     </a>
     {% if entry.author == request.authenticated_userid %}
-        <a class="btn article-edit" href="{{ request.route_url('post_action', action='edit',_query={'id':entry.id}) }}">
+        <a class="btn article-edit" href="{{ request.route_path('post_action', action='edit',_query={'id':entry.id}) }}">
           <span class="oi oi-pencil" title="Edit"></span>
           Edit
         </a>
@@ -19,6 +19,11 @@
     <h2 class="article-meta">
       by
       <span class="author">{{ author.get_author() }}</span>
+      {% if entry.lang %}
+        <span class="lang">
+          in <span class="lang-name" title="{{ entry.lang }}">{{ entry.get_language_name }}</span>
+        </span>
+      {% endif %}
       <span class="date" title="{{ entry.created }}">{{ entry.created_in_words }}</span>
       {% if entry.edited %}
         <span class="edited">

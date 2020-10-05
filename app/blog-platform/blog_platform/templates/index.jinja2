@@ -22,7 +22,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       {% for i in [5, 10, 20] %}
-                        <a class="dropdown-item" href="{{ request.route_url('index', _query={'count':i}) }}">{{ i }}</a>
+                        <a class="dropdown-item" href="{{ request.route_path('index', _query={'count':i}) }}">{{ i }}</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -36,7 +36,7 @@
           <div id="post-{{ entry.id }}" class="card">
             <div class="card-body">
               <h5 class="card-title">
-                <a class="text-decoration-none text-reset" href="{{ request.route_url('post', id=entry.id, slug=entry.slug) }}">
+                <a class="text-decoration-none text-reset" href="{{ request.route_path('post', id=entry.id, slug=entry.slug) }}">
                     {{ entry.title }}
                 </a>
               </h5>
