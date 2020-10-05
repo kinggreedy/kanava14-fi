@@ -177,7 +177,7 @@ Change `command` under `[program:myapp]` to have different backend port than 500
 | `config.vm.network "forwarded_port"` | Forwarding port from guest to host | port `8080` (http) and `22` (ssh) |  
 | `config.vm.synced_folder` | Shared folders between host and guest <br> Remove this value if planning to use unison | `"."` => `"/vagrant"` <br> `"../.."` => `"/opt/kanava14fi/app"` <br> `"../../app/blog-platform"` => `"/opt/kanava14fi/blog-platform"` | 
 | `config.vm.provision "shell"` | Vagrant provision script, scripts with format under `scripts/devbox/*-0-*` are optional | | 
-| `echo "vagrant:vagrant" | chpasswd` | Default password for vagrant if using unison, change to a more challenging password before exposing ssh to public | | 
+| `echo "vagrant:vagrant" \| chpasswd` | Default password for vagrant if using unison, change to a more challenging password before exposing ssh to public | | 
 
 #### scripts/vagrant/sync-app.ps1 or scripts/vagrant/sync-project.ps1 - Configuration for unison sync with Vagrant development
 
