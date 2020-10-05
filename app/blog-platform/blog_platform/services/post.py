@@ -34,3 +34,8 @@ class PostService(object):
 
         return SqlalchemyOrmPage(query, page, items_per_page=count,
                                  url_maker=url_maker)
+
+    @classmethod
+    def missing_language(cls, request):
+        query = request.dbsession.query(Post)
+        return query.filter(Post.lang_timestamp.is_(None)).all()

@@ -11,6 +11,7 @@ import datetime
 import re
 from webhelpers2.text import urlify
 from webhelpers2.date import distance_of_time_in_words
+from iso_language_codes import language_name
 
 from .meta import Base
 from .user import User
@@ -21,8 +22,10 @@ class Post(Base):
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(255), unique=True, nullable=False)
     body = Column(UnicodeText, default=u'')
+    lang = Column(Unicode(255))
     created = Column(DateTime, default=datetime.datetime.utcnow)
     edited = Column(DateTime, onupdate=datetime.datetime.utcnow)
+    lang_timestamp = Column(DateTime)
     author = Column(
         Integer,
         ForeignKey(User.__tablename__ + ".id"),
@@ -67,3 +70,7 @@ class Post(Base):
             collected_words[count - 1] = "..."
 
         return " ".join(collected_words)
+
+    @property
+    def get_language_name(self):
+        return language_name(self.lang)

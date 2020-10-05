@@ -11,10 +11,13 @@ pyramid.debug_authorization = false
 pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
+pyramid.includes =
+    pyramid_celery
 
 project.name = Kanava14.fi
 userauthentication.secret = __secret__
 sqlalchemy.url = postgresql://__username__:__password__@__host__:__port__/__table__
+languagedetector.apikey = __languagedetectorapikey__
 
 retry.attempts = 3
 
@@ -81,3 +84,23 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
+
+[celery]
+BROKER_URL = __redissetupstring__
+CELERY_IMPORTS = blog_platform.tasks.blog_post_tasks
+
+[celerybeat:task1]
+task = blog_platform.tasks.blog_post_tasks.detect_language_task
+type = crontab
+schedule = {"minute": "*/10"}
+
+[logger_celery]
+level = INFO
+handlers =
+qualname = celery
+
+[logger_celery_worker_job]
+level = INFO
+handlers =
+qualname = celery.worker.job
+propagate = 1

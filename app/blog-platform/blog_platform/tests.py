@@ -173,3 +173,32 @@ class TestPostBlog(BaseTest):
         self.assertIsInstance(info, HTTPFound)
         self.assertEqual(blog_db.title, title)
         self.assertEqual(blog_db.body, body)
+
+
+class TestBlogLanguageDetection(BaseTest):
+    def setUp(self):
+        super(TestBlogLanguageDetection, self).setUp()
+        self.init_database()
+
+    def test_demo_detect_language(self):
+        from .models import Post, User
+        from .tasks.blog_post_tasks import detect_language
+
+        author = User(id=2,
+                      username="author_test",
+                      password="author_test",
+                      name="Author Test")
+        blog = Post(id=2,
+                    title="Test Title",
+                    body="Hello World",
+                    author=author.id)
+        self.session.add(author)
+        self.session.add(blog)
+        dummy_request = testing.DummyRequest(
+            dbsession=self.session,
+        )
+        info = detect_language(dummy_request, "demo")
+        blog_db = self.session.query(Post).get(blog.id)
+
+        self.assertEqual(blog_db.lang, "en")
+        self.assertIsNotNone(blog_db.lang_timestamp)

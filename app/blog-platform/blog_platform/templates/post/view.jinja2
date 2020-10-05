@@ -19,6 +19,11 @@
     <h2 class="article-meta">
       by
       <span class="author">{{ author.get_author() }}</span>
+      {% if entry.lang %}
+        <span class="lang">
+          in <span class="lang-name" title="{{ entry.lang }}">{{ entry.get_language_name }}</span>
+        </span>
+      {% endif %}
       <span class="date" title="{{ entry.created }}">{{ entry.created_in_words }}</span>
       {% if entry.edited %}
         <span class="edited">
