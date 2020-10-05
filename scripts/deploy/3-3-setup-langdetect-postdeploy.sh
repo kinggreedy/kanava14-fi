@@ -17,7 +17,8 @@ python -m pip install .
 python -m pip install -U "celery[redis]"
 
 # Config production.ini
-if [ ! grep -q "__languagedetectorapikey__" production.ini; ]
+CONFIG_INI_EXIST=$(grep "__languagedetectorapikey__" production.ini)
+if [ ! $CONFIG_INI_EXIST ];
 then
   /bin/cp -rf production.ini production.ini.bak
   /bin/cp -rf production.ini.sample production.ini
