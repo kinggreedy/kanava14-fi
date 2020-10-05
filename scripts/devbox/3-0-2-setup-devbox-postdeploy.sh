@@ -40,5 +40,6 @@ initialize_blog_platform_db development.ini
 
 # DONE
 touch "$FLAG"
+echo "$session_secret" | tee -a $FLAG
 echo "$db_username" | tee -a $FLAG
 echo "$db_password" | tee -a $FLAG
