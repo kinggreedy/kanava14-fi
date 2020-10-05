@@ -68,7 +68,7 @@ def login(request):
             if user and user.verify_password(request.POST.get('password')):
                 headers = remember(request, user.id)
                 request.session['user'] = user
-        return HTTPFound(location=request.route_url('index'), headers=headers)
+        return HTTPFound(location=request.route_path('index'), headers=headers)
     return {'form': form}
 
 
@@ -76,7 +76,7 @@ def login(request):
 def logout(request):
     headers = forget(request)
     request.session['user'] = None
-    return HTTPFound(location=request.route_url('index'), headers=headers)
+    return HTTPFound(location=request.route_path('index'), headers=headers)
 
 
 @view_config(route_name='register', renderer='../templates/register.jinja2')
@@ -99,7 +99,7 @@ def register(request):
             form.username.errors.append("Username is not available")
             return {'form': form}
         except DetachedInstanceError:
-            return HTTPFound(location=request.route_url('index'))
+            return HTTPFound(location=request.route_path('index'))
 
-        return HTTPFound(location=request.route_url('index'), headers=headers)
+        return HTTPFound(location=request.route_path('index'), headers=headers)
     return {'form': form}

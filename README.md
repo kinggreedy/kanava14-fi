@@ -33,7 +33,7 @@ There are some assumption to be made:
 - Production server will use latest commit from branch `releases/x.x`
 - Pull request to `master` branch will be tested for code styling and unit test
 
-## Instruction on starting the project  
+# Instruction on starting the project  
   
 ### 1. Development - Devbox/Vagrant  
 

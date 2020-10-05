@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="content">
-    <form action="{{ request.route_url('register') }}" method="post" class="form form-register">
+    <form action="{{ request.route_path('register') }}" method="post" class="form form-register">
         <div class="form-group">
             {{ form.name.label }}
             {% for error in form.name.errors %}

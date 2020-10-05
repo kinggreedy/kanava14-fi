@@ -30,7 +30,7 @@ class PostService(object):
 
         def url_maker(link_page):
             query_params['page'] = link_page
-            return request.current_route_url(_query=query_params)
+            return request.current_route_path(_query=query_params)
 
         return SqlalchemyOrmPage(query, page, items_per_page=count,
                                  url_maker=url_maker)

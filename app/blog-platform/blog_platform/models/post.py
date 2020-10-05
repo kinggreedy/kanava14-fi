@@ -46,13 +46,20 @@ class Post(Base):
 
     @property
     def preview_content(self):
-        list_words = self.body.split(" ")
+        """
+        Get Preview Content of a blog post
+
+        Short content are based on the body of the blog post
+        and any non words are removed. The word will also be
+        trimmed down to 12 characters
+        """
+        list_words = self.body.split()
         collected_words = []
         count = 0
         max_words = 15
         for word in list_words:
             if re.sub(r'[^\w]', '', word) != "":
-                collected_words.append(re.sub(r'[^\w\',."-]', '', word))
+                collected_words.append(re.sub(r'[^\w\',."-]', '', word)[:15])
                 count += 1
                 if count >= max_words + 1:
                     break

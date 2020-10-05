@@ -28,7 +28,7 @@ def post_create(request):
         form.populate_obj(entry)
         entry.author = user.id
         request.dbsession.add(entry)
-        return HTTPFound(location=request.route_url('index'))
+        return HTTPFound(location=request.route_path('index'))
     return {'form': form, 'action': request.matchdict.get('action')}
 
 
@@ -48,5 +48,5 @@ def post_update(request):
         del form.id
         form.populate_obj(entry)
         return HTTPFound(
-            location=request.route_url('post', id=entry.id, slug=entry.slug))
+            location=request.route_path('post', id=entry.id, slug=entry.slug))
     return {'form': form, 'action': request.matchdict.get('action')}

@@ -50,7 +50,7 @@ jobs:
 
       - name: Deploy server tools
         run: |-
-          rsync -e "ssh -o StrictHostKeyChecking=no -i ./pkey -p $SERVER_PORT" \
+          rsync -c -e "ssh -o StrictHostKeyChecking=no -i ./pkey -p $SERVER_PORT" \
             -a scripts/deploy/ $SSH_USER@$SERVER_ADDRESS:/opt/kanava14fi/app/scripts/deploy/
 
       - name: Run pre deploy scripts
@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy to server
         run: |-
-          rsync -e "ssh -o StrictHostKeyChecking=no -i ./pkey -p $SERVER_PORT" \
+          rsync -c -e "ssh -o StrictHostKeyChecking=no -i ./pkey -p $SERVER_PORT" \
             -a app/blog-platform/ $SSH_USER@$SERVER_ADDRESS:/opt/kanava14fi/blog-platform/
 
       - name: Running post deploy scripts
