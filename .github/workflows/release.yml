@@ -39,6 +39,7 @@ jobs:
       SSH_USER: ${{ secrets.PRODUCTION_SSH_USER }}
       SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
       SSH_PASSWORD: ${{ secrets.PRODUCTION_SSH_PASSWORD }}
+      LANGUAGE_DETECTOR_API_KEY: ${{ secrets.PRODUCTION_LANGUAGE_DETECTOR_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -66,4 +67,4 @@ jobs:
       - name: Running post deploy scripts
         run: |-
           ssh $SERVER_ADDRESS -l $SSH_USER -p $SERVER_PORT -i ./pkey -o StrictHostKeyChecking=no \
-          '/bin/bash /opt/kanava14fi/app/scripts/deploy/1-1-master-run-post-deploy.sh'
+          'LANGUAGE_DETECTOR_API_KEY="$LANGUAGE_DETECTOR_API_KEY" /bin/bash /opt/kanava14fi/app/scripts/deploy/1-1-master-run-post-deploy.sh'

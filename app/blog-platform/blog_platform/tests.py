@@ -197,7 +197,7 @@ class TestBlogLanguageDetection(BaseTest):
         dummy_request = testing.DummyRequest(
             dbsession=self.session,
         )
-        info = detect_language(dummy_request, "demo")
+        detect_language(dummy_request, "demo")
         blog_db = self.session.query(Post).get(blog.id)
 
         self.assertEqual(blog_db.lang, "en")

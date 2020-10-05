@@ -12,8 +12,10 @@ from sqlalchemy.orm import sessionmaker
 @app.task
 def detect_language_task():
     engine = create_engine(
-        app.conf['PYRAMID_REGISTRY'].settings["sqlalchemy.url"], convert_unicode=True,
-        pool_recycle=3600, pool_size=10)
+        app.conf['PYRAMID_REGISTRY'].settings["sqlalchemy.url"],
+        convert_unicode=True,
+        pool_recycle=3600, pool_size=10
+    )
     db_session = scoped_session(sessionmaker(
         autocommit=False, autoflush=False, bind=engine))
 
