@@ -26,7 +26,7 @@ requires = [
     'wtforms',
     'paginate_sqlalchemy',
     'psycopg2-binary',
-    'celery < 5.0, >= 4.0'
+    'celery < 5.0, >= 4.0',
     'pyramid_celery',
     'detectlanguage',
     'iso_language_codes',
