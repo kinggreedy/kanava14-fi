@@ -28,6 +28,9 @@ def detect_language_task():
 
 def detect_language(request, api_key):
     detectlanguage.configuration.api_key = api_key
+    if (not api_key) or (api_key == '__languagedetectorapikey__'):
+        return 0
+
     posts = PostService.missing_language(request)
     print("Processing", len(posts), "posts")
     for post in posts:

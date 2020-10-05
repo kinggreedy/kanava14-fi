@@ -86,7 +86,7 @@ You can follow the scripts in scripts/deploy/2-* to setup them
       pip install --upgrade pip setuptools
       ```
 - Copy blog-platform into the destination folder  
-- Follow setup commands in scripts/devbox/3-0-2-setup-devbox-postdeploy.sh to  
+- Follow setup commands in scripts/devbox/3-0-*.sh to  
   install the tools for the development such as flask8 and pytest  
   - ```
     pip install .
@@ -131,6 +131,7 @@ Example:
 - Edit password & ssh key and run `scripts/deploy/0-init.sh` to create new deploy account and folders
 - Copy project to `/opt/kanava14fi/app`
 - Run `scripts/deploy/1-master-run.sh` on every new deployment
+- Add language detector api key to `production.ini`
 
 ### 7. Production - Deploy manually
 
@@ -138,11 +139,12 @@ Example:
 - Follow scripts/deploy/3-1-setup-deployment.sh to install the project  
 - Upload the directory `app/blog-development` to correct location on server
 - `cp production.ini.sample production.ini`  
-- Config production.ini as you see fit  
-- Follow scripts/deploy/3-2-setup-postdeployment.sh to finish installing and  
-  config the project  
-- Follow scripts/deploy/4-1-run-predeploy.sh and 4-2-run-postdeploy.sh each time  
-  you deploy a new change  
+- Config `production.ini` as you see fit  
+- Set api key for language detector in `production.ini`
+- Follow `scripts/deploy/3-2-setup-postdeployment.sh` and `scripts/deploy/3-3-setup-postdeployment.sh` 
+  to finish installing and config the project  
+- Follow `scripts/deploy/4-1-run-predeploy.sh` and `4-2-run-postdeploy.sh`
+  each time you deploy a new change  
 
 ### 8. Customization  
   
@@ -197,7 +199,8 @@ Change `command` under `[program:myapp]` to have different backend port than 500
 | `PRODUCTION_PORT` | Production server ssh port | |  
 | `PRODUCTION_SSH_USER` | Deploy username | |  
 | `PRODUCTION_SSH_KEY` | Deploy ssh private key in base64 format `base64 -w 0 <privatekey>` |  |  
-| `PRODUCTION_SSH_PASSWORD` | Deploy ssh password | |  
+| `PRODUCTION_SSH_PASSWORD` | Deploy ssh password | |
+| `PRODUCTION_LANGUAGE_DETECTOR_API_KEY` | https://detectlanguage.com/ API KEY | |  
     
 # Roadmap  
   
