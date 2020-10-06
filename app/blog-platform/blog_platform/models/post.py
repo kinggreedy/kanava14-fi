@@ -20,7 +20,7 @@ from .user import User
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
-    title = Column(Unicode(255), unique=True, nullable=False)
+    title = Column(Unicode(255), nullable=False)
     body = Column(UnicodeText, default=u'')
     lang = Column(Unicode(255))
     created = Column(DateTime, default=datetime.datetime.utcnow)

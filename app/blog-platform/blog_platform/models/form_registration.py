@@ -21,5 +21,6 @@ class RegistrationForm(Form):
 
 
 class SignInForm(Form):
-    username = StringField('Username', filters=[strip_filter])
+    username = StringField('Username', [validators.Length(min=1)],
+                           filters=[strip_filter])
     password = PasswordField('Password', [validators.Length(min=1)])

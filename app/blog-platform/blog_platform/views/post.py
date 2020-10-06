@@ -12,9 +12,9 @@ from ..services.user import UserService
 def post_view(request):
     blog_id = int(request.matchdict.get('id', -1))
     entry = PostService.by_id(blog_id, request)
-    author = UserService.by_id(entry.author, request)
     if not entry:
         return HTTPNotFound()
+    author = UserService.by_id(entry.author, request)
     return {'entry': entry, 'author': author}
 
 

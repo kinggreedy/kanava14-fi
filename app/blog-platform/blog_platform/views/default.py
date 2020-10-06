@@ -5,6 +5,7 @@ from psycopg2.errors import UniqueViolation
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import DetachedInstanceError
 import transaction
+from pyramid.testing import DummyRequest
 
 from ..models.user import User
 from ..models.form_registration import RegistrationForm, SignInForm
@@ -68,7 +69,12 @@ def login(request):
             if user and user.verify_password(request.POST.get('password')):
                 headers = remember(request, user.id)
                 request.session['user'] = user
-        return HTTPFound(location=request.route_path('index'), headers=headers)
+                return HTTPFound(location=request.route_path('index'),
+                                 headers=headers)
+            else:
+                form.password.errors.append("Wrong username or password")
+        else:
+            form.username.errors.append("Username must not be empty")
     return {'form': form}
 
 
@@ -89,11 +95,12 @@ def register(request):
         request.dbsession.add(new_user)
         try:
             # put that registered user as logged in
-            transaction.commit()
-            user = UserService.by_username(new_user.username, request=request)
-            headers = remember(request, user.id)
+            request.dbsession.flush()
+            headers = remember(request, new_user.id)
         except IntegrityError as e:
-            if not isinstance(e.orig, UniqueViolation):
+            # Testing will not raise UniqueViolation, only IntegrityError
+            if not isinstance(e.orig, UniqueViolation) \
+                    and not isinstance(request, DummyRequest):
                 raise e
             transaction.abort()
             form.username.errors.append("Username is not available")
