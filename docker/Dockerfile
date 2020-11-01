@@ -4,7 +4,7 @@ ARG DB_PASS
 WORKDIR /opt/kanava14fi/blog-platform
 
 COPY config /opt/kanava14fi/blog-platform
-COPY app /opt/kanava14fi/blog-platform
+COPY app/blog-platform /opt/kanava14fi/blog-platform
 RUN python -m pip install .
 RUN python -m pip install -e ".[develop]"
 
