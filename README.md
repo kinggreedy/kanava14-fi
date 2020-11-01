@@ -1,6 +1,6 @@
 
 
-# Welcome to Kanava14.fi  1
+# Welcome to Kanava14.fi 
 This project kicks start the revolution for social platform 4.0      
 or so....  
   
