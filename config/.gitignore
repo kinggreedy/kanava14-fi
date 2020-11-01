@@ -16,6 +16,6 @@ Data.fs*
 *.sublime-workspace
 .*.sw?
 .sw?
-app/.DS_Store
+**/.DS_Store
 coverage
 test
