@@ -14,7 +14,7 @@ source venv/bin/activate
 
 cd /opt/kanava14fi/blog-platform
 python -m pip install .
-python -m pip install -U "celery[redis]"
+python -m pip install "celery[redis] < 5.0, >= 4.0"
 
 # Config production.ini
 CONFIG_INI_EXIST=$(grep "__languagedetectorapikey__" production.ini)

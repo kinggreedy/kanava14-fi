@@ -30,6 +30,7 @@ requires = [
     'pyramid_celery',
     'detectlanguage',
     'iso_language_codes',
+    'celery[redis] < 5.0, >= 4.0',
 ]
 
 tests_require = [

@@ -14,7 +14,7 @@ source venv/bin/activate
 
 cd /opt/kanava14fi/blog-platform
 python -m pip install .
-python -m pip install -U "celery[redis]"
+python -m pip install "celery[redis] < 5.0, >= 4.0"
 
 # Config development.ini
 CONFIG_INI_EXIST=$(grep "__languagedetectorapikey__" development.ini)
@@ -33,6 +33,8 @@ fi
 
 sudo sed -i "s/__languagedetectorapikey__/demo/g" development.ini
 sudo sed -i "s/__redissetupstring__/redis:\/\/localhost:6379\/0/g" development.ini
+
+alembic -c development.ini upgrade head
 
 # DONE
 touch "$FLAG"
