@@ -15,7 +15,7 @@ Preview https://kanava14.kinggreedy.com/
 
 # Architecture story  
   
-Although the test only requires us to develop a platform, I would like to put the context of starting a brand new website for a new client that does not have a website before, providing a small CD/CI solution without any previous tools for DevOps.  
+The context of the project is to setup a brand new website for a new client that does not have a website before, providing a small CD/CI solution without any previous tools for DevOps.  
 This approach cause a small problem with the architecture and repository management, because this repository actually host 3 components at once (which should have their own repo): application, devbox, deployment scripts. I tried to not over engineering while keeping everything clean and robust.   
   
 There are some assumption to be made:  

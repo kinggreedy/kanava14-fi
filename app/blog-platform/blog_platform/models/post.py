@@ -42,10 +42,12 @@ class Post(Base):
 
     @property
     def edited_in_words(self):
-        return None if self.edited is None \
+        return (
+            None if self.edited is None
             else distance_of_time_in_words(self.edited,
                                            datetime.datetime.utcnow(),
                                            granularity='minute')
+        )
 
     @property
     def preview_content(self):
